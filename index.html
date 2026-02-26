@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Glossaire de l'Intelligence Artificielle</title>
   <meta name="description" content="Glossaire interactif des termes de l'IA — 30 termes essentiels expliqués simplement avec sources officielles françaises." />
-  <meta property="og:title" content="Glossaire de l'Intelligence Artificielle" />
-  <meta property="og:description" content="30 termes essentiels de l'IA expliqués simplement, avec exemples concrets et sources officielles." />
-  <meta property="og:type" content="website" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
@@ -18,18 +15,18 @@
     html { scroll-behavior: smooth; }
     body {
       min-height: 100vh;
-      background: linear-gradient(160deg, #0a0a12 0%, #12101f 40%, #0d0b18 100%);
-      color: #f0ecff;
+      background: linear-gradient(160deg, #faf9ff 0%, #f3f0fb 40%, #f7f5fc 100%);
+      color: #1a1632;
       font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
     #root { min-height: 100vh; }
-    ::selection { background: rgba(168,148,255,0.3); color: #fff; }
+    ::selection { background: rgba(108,79,207,0.15); color: #1a1632; }
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(168,148,255,0.2); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(168,148,255,0.35); }
-    input::placeholder { color: rgba(255,255,255,0.3); }
+    ::-webkit-scrollbar-thumb { background: rgba(108,79,207,0.18); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(108,79,207,0.3); }
+    input::placeholder { color: rgba(26,22,50,0.35); }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
@@ -39,497 +36,55 @@
 </head>
 <body>
   <div id="root"></div>
-
   <script type="text/babel">
-    const { useState, useMemo, useRef, useEffect, useCallback } = React;
+    const { useState, useMemo, useRef, useEffect } = React;
 
-    /* =========================================
-       DATA
-    ========================================= */
     const glossaryData = [
-      // === FONDAMENTAUX ===
-      {
-        id: "ia", term: "Intelligence Artificielle (IA)", en: "Artificial Intelligence (AI)",
-        category: "Fondamentaux", icon: "\u{1F9E0}",
-        summary: "Champ interdisciplinaire visant à créer des systèmes capables d'imiter des processus cognitifs humains comme le raisonnement, l'apprentissage et la prise de décision.",
-        detail: "L'IA est un domaine théorique et pratique qui a pour objet la compréhension de mécanismes de la cognition et de la réflexion, et leur imitation par un dispositif matériel et logiciel. Elle englobe de nombreuses sous-disciplines : apprentissage automatique, traitement du langage naturel, vision par ordinateur, robotique, etc. On distingue souvent l'IA faible (spécialisée dans une tâche précise, comme la reconnaissance d'images) de l'IA forte (théorique, capable de raisonner de manière autonome comme un humain). Les systèmes d'IA actuels sont tous de type « IA faible » ou « IA étroite ».",
-        example: "Les assistants vocaux (Siri, Alexa), la recommandation de contenus sur Netflix, les filtres anti-spam de Gmail, ou encore les outils comme ChatGPT et Claude.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-          { label: "Légifrance — Vocabulaire officiel", url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000037783813" },
-        ],
-      },
-      {
-        id: "ia-generative", term: "IA Générative", en: "Generative AI (GenAI)",
-        category: "Fondamentaux", icon: "\u2728",
-        summary: "Branche de l'IA qui utilise des modèles génératifs pour produire du contenu nouveau : texte, images, audio, vidéo ou code.",
-        detail: "L'IA générative s'appuie sur des modèles entraînés sur d'immenses volumes de données pour créer du contenu original. Contrairement à l'IA classique qui classe ou prédit, l'IA générative « crée ». Elle repose principalement sur des architectures comme les Transformeurs (GPT, Claude, Gemini) pour le texte, les modèles de diffusion (Stable Diffusion, DALL-E, Midjourney) pour les images, et des modèles spécialisés pour l'audio et la vidéo. Le terme officiel français recommandé est « intelligence artificielle générative ».",
-        example: "Claude (Anthropic), ChatGPT (OpenAI), Midjourney et Stable Diffusion pour les images, Suno pour la musique, Sora (OpenAI) pour la vidéo.",
-        sources: [
-          { label: "Min. Éducation — Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" },
-          { label: "Min. Culture — 50 termes clés", url: "https://www.culture.gouv.fr/thematiques/langue-francaise-et-langues-de-france/agir-pour-les-langues/moderniser-et-enrichir-la-langue-francaise/nos-publications/50-termes-cles-de-l-intelligence-artificielle" },
-        ],
-      },
-      {
-        id: "llm", term: "Grand Modèle de Langage (LLM)", en: "Large Language Model (LLM)",
-        category: "Fondamentaux", icon: "\u{1F4DA}",
-        summary: "Modèle d'IA entraîné sur d'énormes volumes de texte, capable de comprendre et de générer du langage naturel de manière cohérente.",
-        detail: "Un LLM est un type de réseau de neurones (généralement basé sur l'architecture Transformeur) qui a été pré-entraîné sur des milliards de pages de texte issues d'internet, de livres, d'articles scientifiques, etc. Cette phase d'entraînement lui permet d'acquérir une compréhension statistique profonde du langage. Les LLM sont ensuite affinés (fine-tuning) et alignés avec les préférences humaines (RLHF) pour devenir des assistants utiles. La taille d'un LLM se mesure en « paramètres » (les poids ajustables du réseau).",
-        example: "GPT-4 (OpenAI), Claude (Anthropic), Gemini (Google), Llama (Meta), Mistral (Mistral AI).",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-          { label: "Min. Culture — 50 termes clés", url: "https://www.culture.gouv.fr/thematiques/langue-francaise-et-langues-de-france/agir-pour-les-langues/moderniser-et-enrichir-la-langue-francaise/nos-publications/50-termes-cles-de-l-intelligence-artificielle" },
-        ],
-      },
-      {
-        id: "modele-generatif", term: "Modèle Génératif", en: "Generative Model",
-        category: "Fondamentaux", icon: "\u{1F52E}",
-        summary: "Modèle d'IA capable de produire de nouvelles données (texte, images, sons) qui ressemblent aux données sur lesquelles il a été entraîné.",
-        detail: "Un modèle génératif apprend la distribution statistique des données d'entraînement et peut ensuite échantillonner cette distribution pour créer du contenu nouveau. Il existe plusieurs familles : les modèles auto-régressifs (GPT, Claude) qui génèrent du texte mot par mot, les modèles de diffusion (Stable Diffusion) qui partent de bruit aléatoire pour construire une image, les GAN (réseaux antagonistes génératifs) qui utilisent deux réseaux en compétition, et les VAE (auto-encodeurs variationnels). Le terme officiel français est « modèle génératif ».",
-        example: "Claude est un modèle génératif de texte. DALL-E 3 est un modèle génératif d'images.",
-        sources: [
-          { label: "Min. Éducation — Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" },
-        ],
-      },
-      {
-        id: "modele-preentrainé", term: "Modèle Préentraîné", en: "Foundation Model / Pretrained Model",
-        category: "Fondamentaux", icon: "\u{1F3D7}\uFE0F",
-        summary: "Modèle d'IA entraîné de manière généraliste sur un large volume de données, conçu pour être réutilisé et adapté à de nombreuses tâches.",
-        detail: "Un modèle préentraîné (aussi appelé « modèle de fondation » dans le langage courant, bien que ce terme soit déconseillé officiellement en français) est le résultat d'un apprentissage massif et coûteux. Il sert de base à des adaptations ultérieures via le fine-tuning ou l'apprentissage par transfert. L'idée est d'investir une fois dans un entraînement généraliste, puis de spécialiser le modèle pour des usages précis à moindre coût.",
-        example: "Llama 3 de Meta est un modèle préentraîné open source que des entreprises peuvent adapter à leurs besoins spécifiques.",
-        sources: [
-          { label: "Min. Éducation — Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" },
-          { label: "Légifrance — Vocabulaire officiel", url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000037783813" },
-        ],
-      },
-
-      // === APPRENTISSAGE ===
-      {
-        id: "apprentissage-automatique", term: "Apprentissage Automatique", en: "Machine Learning (ML)",
-        category: "Apprentissage", icon: "\u2699\uFE0F",
-        summary: "Processus par lequel un algorithme améliore ses performances en s'entraînant sur des données, sans être explicitement programmé pour chaque cas.",
-        detail: "L'apprentissage automatique (ou apprentissage machine) est le cœur de l'IA moderne. Au lieu de coder des règles à la main, on fournit des exemples à un algorithme qui va « apprendre » les patterns sous-jacents. Le processus implique : (1) la collecte de données, (2) le choix d'un modèle (réseau de neurones, arbre de décision, etc.), (3) l'entraînement sur ces données, (4) l'évaluation des résultats, (5) le déploiement. Il existe trois grandes familles : apprentissage supervisé, non supervisé et par renforcement.",
-        example: "Un filtre anti-spam qui apprend à distinguer les e-mails légitimes des spams en analysant des milliers d'exemples étiquetés.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-          { label: "Légifrance — Vocabulaire officiel", url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000037783813" },
-        ],
-      },
-      {
-        id: "apprentissage-supervise", term: "Apprentissage Supervisé", en: "Supervised Learning",
-        category: "Apprentissage", icon: "\u{1F3F7}\uFE0F",
-        summary: "Méthode d'apprentissage où l'algorithme s'entraîne sur des données étiquetées, c'est-à-dire des exemples dont on connaît déjà la réponse attendue.",
-        detail: "Dans l'apprentissage supervisé, chaque exemple d'entraînement est associé à un label (étiquette). Le modèle apprend à prédire ces labels pour de nouvelles données jamais vues. C'est la forme la plus courante d'apprentissage automatique. On distingue deux types de tâches : la classification (prédire une catégorie : chat ou chien ?) et la régression (prédire une valeur numérique : quel sera le prix de cette maison ?). La qualité des données étiquetées est cruciale pour les performances du modèle.",
-        example: "Entraîner un modèle à reconnaître des tumeurs sur des radiographies en lui montrant des milliers d'images annotées par des médecins.",
-        sources: [
-          { label: "Min. Enseignement supérieur — Vocabulaire IA", url: "https://www.enseignementsup-recherche.gouv.fr/fr/bo/19/Hebdo6/CTNR1832601K.htm" },
-        ],
-      },
-      {
-        id: "apprentissage-non-supervise", term: "Apprentissage Non Supervisé", en: "Unsupervised Learning",
-        category: "Apprentissage", icon: "\u{1F50D}",
-        summary: "Méthode où l'algorithme découvre des structures et des patterns cachés dans des données non étiquetées, sans réponses prédéfinies.",
-        detail: "Contrairement à l'apprentissage supervisé, ici les données ne comportent pas de label. L'algorithme doit trouver par lui-même des structures intéressantes. Les techniques principales incluent : le clustering (regroupement de données similaires, comme K-means), la réduction de dimensionnalité (simplifier des données complexes), et la détection d'anomalies. C'est particulièrement utile quand l'étiquetage manuel serait trop coûteux ou impossible.",
-        example: "Segmenter automatiquement des clients en groupes selon leurs habitudes d'achat, sans catégories prédéfinies.",
-        sources: [
-          { label: "Min. Enseignement supérieur — Vocabulaire IA", url: "https://www.enseignementsup-recherche.gouv.fr/fr/bo/19/Hebdo6/CTNR1832601K.htm" },
-          { label: "CScience — Glossaire IA", url: "https://www.cscience.ca/le-glossaire-de-lintelligence-artificielle-ia-cscience/" },
-        ],
-      },
-      {
-        id: "apprentissage-renforcement", term: "Apprentissage par Renforcement", en: "Reinforcement Learning (RL)",
-        category: "Apprentissage", icon: "\u{1F3AE}",
-        summary: "Méthode où un agent apprend en interagissant avec un environnement, recevant des récompenses ou des pénalités selon ses actions.",
-        detail: "L'apprentissage par renforcement s'inspire de la psychologie comportementale. Un agent prend des actions dans un environnement, reçoit des signaux de récompense/punition, et ajuste sa stratégie (politique) pour maximiser la récompense cumulée à long terme. C'est la technique derrière des percées célèbres comme AlphaGo de DeepMind. C'est aussi central dans l'alignement des LLM via le RLHF (Reinforcement Learning from Human Feedback) où des humains évaluent les réponses du modèle.",
-        example: "Un robot qui apprend à marcher en essayant différents mouvements et en recevant un score selon sa stabilité et sa distance parcourue.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-          { label: "CScience — Glossaire IA", url: "https://www.cscience.ca/le-glossaire-de-lintelligence-artificielle-ia-cscience/" },
-        ],
-      },
-      {
-        id: "apprentissage-profond", term: "Apprentissage Profond", en: "Deep Learning",
-        category: "Apprentissage", icon: "\u{1F3D4}\uFE0F",
-        summary: "Sous-domaine de l'apprentissage automatique utilisant des réseaux de neurones à nombreuses couches pour traiter des données complexes.",
-        detail: "L'apprentissage profond utilise des réseaux de neurones artificiels avec un grand nombre de couches (d'où « profond »). Chaque couche traite l'information à un niveau d'abstraction croissant. Par exemple, pour la reconnaissance d'images : les premières couches détectent les bords, les suivantes les formes, puis les objets. Cette architecture est derrière la plupart des avancées récentes en IA : reconnaissance vocale, traduction automatique, génération de texte et d'images. L'apprentissage profond nécessite de grandes quantités de données et de puissance de calcul (GPU/TPU).",
-        example: "La reconnaissance faciale sur un smartphone, la traduction automatique de DeepL, ou la conduite autonome de Tesla.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-          { label: "Réseau Canopé — Lexique IA", url: "https://www.reseau-canope.fr/actualites/article/parlez-vous-ia-le-lexique-pratique-de-lintelligence-artificielle" },
-        ],
-      },
-      {
-        id: "fine-tuning", term: "Affinage / Fine-tuning", en: "Fine-tuning",
-        category: "Apprentissage", icon: "\u{1F3AF}",
-        summary: "Processus d'adaptation d'un modèle préentraîné à une tâche ou un domaine spécifique en poursuivant son entraînement sur des données ciblées.",
-        detail: "Le fine-tuning consiste à prendre un modèle déjà entraîné (comme GPT ou Llama) et à l'entraîner un peu plus sur un jeu de données spécialisé. Cela permet de spécialiser le modèle sans repartir de zéro, ce qui serait extrêmement coûteux. Il existe plusieurs techniques : le fine-tuning complet (tous les paramètres sont ajustés), le LoRA (Low-Rank Adaptation, qui ne modifie qu'une petite partie des paramètres), et le fine-tuning par instructions. Le fine-tuning modifie le comportement du modèle, tandis que le RAG modifie ses connaissances.",
-        example: "Fine-tuner un LLM sur des documents juridiques français pour qu'il soit plus performant en droit, ou sur le ton d'une marque pour générer du contenu marketing cohérent.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "rlhf", term: "RLHF", en: "Reinforcement Learning from Human Feedback",
-        category: "Apprentissage", icon: "\u{1F464}",
-        summary: "Technique d'alignement des modèles de langage qui utilise les retours humains pour guider l'apprentissage par renforcement.",
-        detail: "Le RLHF est un processus en plusieurs étapes : (1) un modèle préentraîné génère plusieurs réponses à une même question, (2) des évaluateurs humains classent ces réponses de la meilleure à la pire, (3) un modèle de récompense est entraîné sur ces classements, (4) le LLM est affiné par renforcement pour maximiser cette récompense. C'est grâce au RLHF que les LLM comme Claude ou ChatGPT sont devenus des assistants utiles. Des variantes comme le DPO (Direct Preference Optimization) simplifient ce processus.",
-        example: "Quand Claude refuse poliment de générer du contenu dangereux tout en restant utile, c'est en grande partie grâce au RLHF et aux techniques d'alignement.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "transfer-learning", term: "Apprentissage par Transfert", en: "Transfer Learning",
-        category: "Apprentissage", icon: "\u{1F504}",
-        summary: "Technique qui consiste à réutiliser un modèle entraîné sur une tâche pour l'adapter à une tâche différente mais apparentée.",
-        detail: "L'apprentissage par transfert est le principe fondateur derrière le fine-tuning. L'idée est qu'un modèle ayant appris des représentations générales du monde peut transférer ces connaissances à des tâches spécifiques avec beaucoup moins de données qu'un entraînement de zéro. C'est un peu comme apprendre l'espagnol après avoir maîtrisé le français : beaucoup de connaissances sont transférables.",
-        example: "Un modèle de vision entraîné sur ImageNet (millions de photos génériques) est réutilisé pour détecter des défauts sur des pièces industrielles avec seulement quelques centaines d'exemples.",
-        sources: [
-          { label: "Min. Éducation — Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" },
-        ],
-      },
-
-      // === ARCHITECTURE ===
-      {
-        id: "reseau-neurones", term: "Réseau de Neurones Artificiels", en: "Artificial Neural Network",
-        category: "Architecture", icon: "\u{1F578}\uFE0F",
-        summary: "Architecture de calcul inspirée du cerveau humain, composée de neurones artificiels interconnectés organisés en couches.",
-        detail: "Un réseau de neurones est composé de couches de neurones artificiels. Chaque neurone reçoit des entrées, les combine avec des poids (paramètres appris), applique une fonction d'activation, et transmet le résultat à la couche suivante. Il y a typiquement une couche d'entrée, une ou plusieurs couches cachées, et une couche de sortie. L'entraînement ajuste les poids via la rétropropagation du gradient. Les architectures varient : CNN pour les images, RNN/LSTM pour les séquences, Transformeurs pour le texte et le multimodal.",
-        example: "Un réseau de neurones convolutif (CNN) qui analyse des photos pour détecter si elles contiennent un chat ou un chien.",
-        sources: [
-          { label: "Légifrance — Vocabulaire officiel", url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000037783813" },
-          { label: "Conseil de l'Europe — Glossaire IA", url: "https://www.coe.int/fr/web/artificial-intelligence/glossary" },
-        ],
-      },
-      {
-        id: "transformeur", term: "Transformeur", en: "Transformer",
-        category: "Architecture", icon: "\u26A1",
-        summary: "Architecture de réseau de neurones révolutionnaire basée sur le mécanisme d'attention, à la base de tous les LLM modernes.",
-        detail: "Introduit en 2017 dans l'article « Attention Is All You Need » par Google, le Transformeur a révolutionné l'IA. Sa force : le mécanisme d'auto-attention (self-attention) qui permet de traiter toutes les parties d'un texte en parallèle, contrairement aux réseaux récurrents (RNN) qui lisaient mot par mot. Cela permet un entraînement beaucoup plus rapide sur de grandes quantités de données. Le « T » de GPT signifie « Transformer ». Le Transformeur traite les données en parallèle, ce qui le rend idéal pour l'exploitation des GPU modernes.",
-        example: "GPT-4, Claude, Gemini, Llama — tous sont basés sur l'architecture Transformeur. Le « T » de ChatGPT signifie « Transformer ».",
-        sources: [
-          { label: "Min. Éducation — Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" },
-        ],
-      },
-      {
-        id: "neurone-artificiel", term: "Neurone Artificiel", en: "Artificial Neuron",
-        category: "Architecture", icon: "\u{1F535}",
-        summary: "Unité de calcul élémentaire d'un réseau de neurones, qui reçoit des entrées, les pondère et produit une sortie via une fonction d'activation.",
-        detail: "Le neurone artificiel (ou neurone formel) est l'unité de base des réseaux de neurones. Il fonctionne ainsi : (1) il reçoit des valeurs d'entrée, (2) chaque entrée est multipliée par un poids (un paramètre appris), (3) les entrées pondérées sont additionnées, (4) une fonction d'activation non linéaire transforme cette somme en signal de sortie. Les fonctions d'activation courantes sont ReLU, sigmoid et tanh. C'est la combinaison de millions/milliards de ces neurones simples qui donne au réseau sa puissance.",
-        example: "Dans un LLM comme Claude, chaque couche contient des milliers de neurones qui traitent collectivement les informations du texte.",
-        sources: [
-          { label: "Légifrance — Vocabulaire officiel", url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000037783813" },
-          { label: "CScience — Glossaire IA", url: "https://www.cscience.ca/le-glossaire-de-lintelligence-artificielle-ia-cscience/" },
-        ],
-      },
-      {
-        id: "parametres", term: "Paramètres", en: "Parameters",
-        category: "Architecture", icon: "\u{1F4CA}",
-        summary: "Les valeurs numériques internes (poids) d'un modèle d'IA qui sont ajustées pendant l'entraînement. Plus il y en a, plus le modèle est potentiellement puissant.",
-        detail: "Les paramètres sont les « boutons de réglage » d'un modèle. Pendant l'entraînement, l'algorithme ajuste ces millions ou milliards de nombres pour que le modèle fasse de meilleures prédictions. La taille d'un modèle se mesure souvent par son nombre de paramètres : Llama 3 existe en versions 8B (8 milliards), 70B et 405B de paramètres. Plus de paramètres permettent généralement de capturer des patterns plus complexes, mais augmentent les coûts de calcul et de mémoire.",
-        example: "GPT-3 avait 175 milliards de paramètres. Les modèles récents les plus grands dépassent le billion (1 000 milliards) de paramètres.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-
-      // === TOKENS & DONNÉES ===
-      {
-        id: "token", term: "Jeton / Token", en: "Token",
-        category: "Tokens & Données", icon: "\u{1F9E9}",
-        summary: "Unité élémentaire de texte traitée par un LLM. Un token peut être un mot, un bout de mot ou un caractère de ponctuation.",
-        detail: "Avant de traiter du texte, un LLM le découpe en « tokens » via un processus appelé tokenisation. Un token n'est pas forcément un mot complet : « indéfiniment » pourrait être découpé en « ind », « éfin », « iment ». En moyenne, 1 token ≈ 0,75 mot en anglais et un peu moins en français. Les tokens sont importants car : (1) les LLM ont une limite de tokens par requête (fenêtre de contexte), (2) la facturation des API se fait au token, (3) la vitesse de génération se mesure en tokens/seconde.",
-        example: "La phrase « Bonjour, comment allez-vous ? » fait environ 8 tokens. Claude peut traiter jusqu'à 200 000 tokens dans sa fenêtre de contexte.",
-        sources: [
-          { label: "Min. Éducation — Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" },
-        ],
-      },
-      {
-        id: "fenetre-contexte", term: "Fenêtre de Contexte", en: "Context Window",
-        category: "Tokens & Données", icon: "\u{1FA9F}",
-        summary: "La quantité maximale de texte (en tokens) qu'un LLM peut traiter en une seule fois, incluant l'entrée et la sortie.",
-        detail: "La fenêtre de contexte détermine combien d'informations le modèle peut « voir » simultanément. C'est comme la mémoire de travail du modèle. Elle inclut : le prompt système, l'historique de conversation, les documents fournis, ET la réponse générée. Les fenêtres se sont considérablement agrandies : de 4K tokens pour GPT-3 à 200K pour Claude et jusqu'à 2M pour Gemini. Cependant, les recherches montrent que les performances se dégradent souvent au milieu de longs contextes (phénomène « Lost in the Middle »).",
-        example: "Avec 200K tokens de contexte, Claude peut analyser un document d'environ 500 pages en une seule requête.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "embedding", term: "Plongement / Embedding", en: "Embedding",
-        category: "Tokens & Données", icon: "\u{1F4D0}",
-        summary: "Représentation mathématique (vecteur de nombres) d'un mot, d'une phrase ou d'un document, qui capture son sens sémantique.",
-        detail: "Un embedding transforme du texte (ou une image, un son) en un vecteur de nombres dans un espace à haute dimension. L'astuce : les éléments sémantiquement proches ont des vecteurs proches. « Roi » et « Reine » seront plus proches que « Roi » et « Voiture ». Cela permet aux machines de « comprendre » le sens du texte, pas seulement sa forme. Les embeddings sont au cœur des moteurs de recherche sémantique et des systèmes RAG.",
-        example: "Dans un système RAG, les documents d'une entreprise sont convertis en embeddings et stockés dans une base vectorielle pour permettre une recherche par sens.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "donnees-entrainement", term: "Données d'Entraînement", en: "Training Data",
-        category: "Tokens & Données", icon: "\u{1F4E6}",
-        summary: "L'ensemble des données utilisées pour entraîner un modèle d'IA. Leur qualité et diversité déterminent directement les performances du modèle.",
-        detail: "Les données d'entraînement sont la « nourriture » du modèle. Pour un LLM, ce sont des milliards de pages de texte (web, livres, code, articles). La qualité des données est cruciale : des données biaisées produisent un modèle biaisé (garbage in, garbage out). Les défis incluent : le nettoyage des données, la gestion des droits d'auteur, l'équilibre entre les langues et les cultures, et la protection des données personnelles. Le RGPD impose des contraintes importantes sur l'utilisation des données personnelles pour l'entraînement en Europe.",
-        example: "Common Crawl (un immense corpus de pages web) et The Pile sont des jeux de données couramment utilisés pour pré-entraîner des LLM.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-
-      // === INTERACTION ===
-      {
-        id: "prompt", term: "Instruction Générative / Prompt", en: "Prompt",
-        category: "Interaction", icon: "\u{1F4AC}",
-        summary: "Consigne donnée par un utilisateur à un modèle génératif, formulée en langage naturel, qui décrit la tâche à accomplir.",
-        detail: "Le prompt est l'interface entre l'humain et le modèle d'IA. Il peut être simple (« traduis ce texte ») ou complexe, avec du contexte, des exemples et des contraintes. Le terme officiel recommandé en français est « instruction générative ». L'art de bien formuler ses prompts s'appelle le « prompt engineering ». Un bon prompt inclut : un rôle pour le modèle, le contexte nécessaire, la tâche précise, le format de sortie souhaité, et éventuellement des exemples (few-shot).",
-        example: "« Tu es un expert en sécurité informatique. Explique les bonnes pratiques de mots de passe à un public débutant, en 5 points concis. »",
-        sources: [
-          { label: "Min. Éducation — Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" },
-          { label: "Réseau Canopé — Lexique IA", url: "https://www.reseau-canope.fr/actualites/article/parlez-vous-ia-le-lexique-pratique-de-lintelligence-artificielle" },
-        ],
-      },
-      {
-        id: "prompt-engineering", term: "Ingénierie de Prompt", en: "Prompt Engineering",
-        category: "Interaction", icon: "\u{1F6E0}\uFE0F",
-        summary: "Art et science de formuler des instructions précises et efficaces pour obtenir les meilleurs résultats d'un modèle d'IA.",
-        detail: "L'ingénierie de prompt est une compétence devenue essentielle. Les techniques courantes incluent : le Zero-shot (poser la question directement), le Few-shot (donner des exemples), le Chain-of-Thought (demander au modèle de raisonner étape par étape), le Role-playing (assigner un rôle au modèle), et le prompt système (instructions cachées). Des techniques avancées incluent aussi le Tree-of-Thought, le ReAct (Reasoning + Acting) et le prompt structuré avec des balises XML.",
-        example: "Au lieu de « résume ce texte », un bon prompt serait : « Résume ce texte en 3 paragraphes. Le premier couvre les points principaux, le second les détails techniques, le troisième les implications. »",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "dialogueur", term: "Dialogueur / Chatbot", en: "Chatbot / Conversational Agent",
-        category: "Interaction", icon: "\u{1F916}",
-        summary: "Logiciel spécialisé dans le dialogue en langage naturel avec un humain, capable de répondre à des questions ou de déclencher des actions.",
-        detail: "Le terme officiel français est « dialogueur ». Un dialogueur peut aller du simple arbre de décision scriptées (les premiers chatbots comme ELIZA en 1966) aux systèmes sophistiqués basés sur des LLM (ChatGPT, Claude). Les dialogueurs modernes combinent compréhension du langage naturel, gestion du contexte conversationnel, et parfois accès à des outils externes.",
-        example: "Claude d'Anthropic, ChatGPT d'OpenAI, Gemini de Google sont des dialogueurs avancés basés sur des LLM.",
-        sources: [
-          { label: "Légifrance — Vocabulaire officiel", url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000037783813" },
-          { label: "Min. Enseignement supérieur — Vocabulaire IA", url: "https://www.enseignementsup-recherche.gouv.fr/fr/bo/19/Hebdo6/CTNR1832601K.htm" },
-        ],
-      },
-      {
-        id: "agent", term: "Agent IA", en: "AI Agent",
-        category: "Interaction", icon: "\u{1F575}\uFE0F",
-        summary: "Système d'IA autonome capable de percevoir son environnement, de prendre des décisions et d'agir pour atteindre des objectifs.",
-        detail: "Un agent IA va au-delà du simple chatbot : il peut planifier des actions, utiliser des outils, naviguer sur le web, exécuter du code, et itérer sur ses résultats. Un agent typique combine un LLM (pour le raisonnement) avec des outils (recherche web, base de données, API) et une boucle de rétroaction. Les frameworks populaires incluent LangChain, CrewAI et le SDK d'Anthropic. Claude Code est un exemple d'agent : il peut écrire, exécuter et débugger du code de manière autonome.",
-        example: "Un agent qui, à partir de la demande « organise mon voyage à Tokyo », recherche les vols, compare les hôtels, crée un itinéraire et réserve les activités.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-          { label: "CScience — Glossaire IA", url: "https://www.cscience.ca/le-glossaire-de-lintelligence-artificielle-ia-cscience/" },
-        ],
-      },
-      {
-        id: "rag", term: "RAG (Génération Augmentée par Récupération)", en: "Retrieval-Augmented Generation",
-        category: "Interaction", icon: "\u{1F517}",
-        summary: "Architecture qui enrichit les réponses d'un LLM en récupérant d'abord des informations pertinentes dans une base de connaissances externe.",
-        detail: "Le RAG, inventé par Facebook AI Research en 2020, résout un problème majeur des LLM : leurs connaissances sont figées à la date d'entraînement. Le processus : (1) la question est convertie en embedding, (2) une recherche sémantique trouve les documents pertinents dans une base vectorielle, (3) ces documents sont injectés dans le prompt du LLM, (4) le LLM génère sa réponse en s'appuyant sur ces documents. Le RAG est complémentaire du fine-tuning : le RAG change ce que le modèle sait, le fine-tuning change comment il se comporte.",
-        example: "Un chatbot d'entreprise qui répond aux questions des employés en cherchant d'abord dans la documentation interne (wiki, procédures, FAQ).",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "mcp", term: "MCP (Protocole de Contexte de Modèle)", en: "Model Context Protocol",
-        category: "Interaction", icon: "\u{1F50C}",
-        summary: "Protocole ouvert développé par Anthropic permettant aux LLM de se connecter à des sources de données et outils externes de manière standardisée.",
-        detail: "Le MCP est un standard ouvert qui permet aux modèles d'IA de se connecter à des applications tierces (Google Drive, Slack, GitHub, bases de données, etc.) de manière standardisée et sécurisée. Avant le MCP, chaque intégration nécessitait un développement spécifique. Le MCP fonctionne comme un « USB-C pour l'IA » : un seul protocole pour connecter n'importe quel outil. Il fonctionne via des serveurs MCP qui exposent des « tools » (actions) et des « resources » (données).",
-        example: "Grâce au MCP, Claude peut rechercher dans Notion, lire des e-mails Gmail, ou créer des tâches Asana directement depuis la conversation.",
-        sources: [
-          { label: "Anthropic — Documentation MCP", url: "https://docs.anthropic.com" },
-        ],
-      },
-
-      // === LANGAGE ===
-      {
-        id: "tln", term: "Traitement du Langage Naturel (TLN)", en: "Natural Language Processing (NLP)",
-        category: "Langage", icon: "\u{1F5E3}\uFE0F",
-        summary: "Branche de l'IA qui permet aux machines de comprendre, interpréter et générer le langage humain.",
-        detail: "Le TLN englobe toutes les technologies permettant l'interaction homme-machine en langage naturel. Ses sous-domaines incluent : l'analyse de sentiment, la reconnaissance d'entités nommées, la traduction automatique, le résumé automatique, la génération de texte, et la réponse aux questions. Les LLM ont révolutionné le TLN en offrant des performances quasi-humaines sur de nombreuses tâches.",
-        example: "La correction automatique de votre smartphone, la traduction de DeepL, l'analyse automatique des avis clients.",
-        sources: [
-          { label: "CScience — Glossaire IA", url: "https://www.cscience.ca/le-glossaire-de-lintelligence-artificielle-ia-cscience/" },
-          { label: "Conseil de l'Europe — Glossaire IA", url: "https://www.coe.int/fr/web/artificial-intelligence/glossary" },
-        ],
-      },
-      {
-        id: "hallucination", term: "Hallucination", en: "Hallucination",
-        category: "Langage", icon: "\u{1F47B}",
-        summary: "Phénomène où un modèle d'IA génère des informations fausses, inventées ou incohérentes avec un ton très convaincant.",
-        detail: "Les hallucinations sont l'un des défis majeurs des LLM. Le modèle ne « sait » pas qu'il invente : il génère le texte le plus probable statistiquement, ce qui peut produire des faits inexistants, de fausses citations, ou des références bibliographiques inventées. Les stratégies pour réduire les hallucinations incluent le RAG (ancrer les réponses dans des sources), le chain-of-thought (forcer le raisonnement étape par étape) et la vérification croisée.",
-        example: "Un LLM qui cite un article scientifique avec un titre, des auteurs et un DOI parfaitement crédibles… mais qui n'existe pas du tout.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "temperature", term: "Température", en: "Temperature",
-        category: "Langage", icon: "\u{1F321}\uFE0F",
-        summary: "Paramètre qui contrôle le degré de créativité et d'aléatoire dans les réponses d'un modèle de langage.",
-        detail: "La température est un nombre entre 0 et 1 (parfois 2) qui ajuste la distribution de probabilité lors de la génération de texte. À température 0, le modèle choisit toujours le token le plus probable (déterministe). À température élevée (0.8-1), le modèle explore des options moins probables (créatif, surprenant, mais plus risqué). Pour les tâches factuelles, on utilise une température basse. Pour les tâches créatives, une température plus haute.",
-        example: "Pour générer du code fiable, on utilise une température de 0. Pour écrire un poème original, on monte à 0.8 ou plus.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "tokenisation", term: "Tokenisation / Segmentation", en: "Tokenization",
-        category: "Langage", icon: "\u2702\uFE0F",
-        summary: "Processus de découpage d'un texte en unités élémentaires (tokens) que le modèle peut traiter.",
-        detail: "La tokenisation est la première étape du traitement de texte par un LLM. Les méthodes courantes incluent : BPE (Byte-Pair Encoding) utilisé par GPT, WordPiece utilisé par BERT, et SentencePiece. Le français nécessite généralement plus de tokens que l'anglais pour exprimer la même idée, ce qui impacte le coût et la longueur effective du contexte. Le vocabulaire du tokeniseur contient typiquement entre 30 000 et 100 000 entrées.",
-        example: "Le mot « anticonstitutionnellement » pourrait être découpé en tokens : « anti », « constitu », « tion », « nelle », « ment ».",
-        sources: [
-          { label: "Min. Éducation — Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" },
-        ],
-      },
-
-      // === MULTIMODAL ===
-      {
-        id: "vision-ordinateur", term: "Vision par Ordinateur", en: "Computer Vision",
-        category: "Multimodal", icon: "\u{1F441}\uFE0F",
-        summary: "Domaine de l'IA qui permet aux machines d'interpréter et de comprendre les images et les vidéos.",
-        detail: "La vision par ordinateur utilise des réseaux de neurones (principalement des CNN et des Vision Transformers) pour analyser des images. Les tâches principales incluent : la classification d'images, la détection d'objets, la segmentation, et la reconnaissance faciale. Les modèles multimodaux récents (GPT-4V, Claude) combinent vision et langage : ils peuvent décrire, analyser et répondre à des questions sur des images.",
-        example: "Les voitures autonomes utilisent la vision par ordinateur pour détecter les piétons, lire les panneaux et suivre les voies.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "multimodal", term: "Multimodal", en: "Multimodal",
-        category: "Multimodal", icon: "\u{1F3AD}",
-        summary: "Se dit d'un modèle d'IA capable de traiter et/ou de générer plusieurs types de données : texte, images, audio, vidéo.",
-        detail: "Un modèle multimodal peut comprendre et combiner différentes modalités de données. Par exemple, Claude peut analyser une image et en discuter en texte. GPT-4o peut traiter du texte, de l'audio et des images simultanément. La multimodalité est une tendance majeure : elle permet des interactions plus naturelles et des applications plus riches.",
-        example: "Envoyer une photo d'un message d'erreur à Claude et lui demander de diagnostiquer le problème.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "diffusion", term: "Modèle de Diffusion", en: "Diffusion Model",
-        category: "Multimodal", icon: "\u{1F3A8}",
-        summary: "Type de modèle génératif qui crée des images en partant de bruit aléatoire et en le « débruitant » progressivement.",
-        detail: "Les modèles de diffusion fonctionnent en deux phases : (1) pendant l'entraînement, on ajoute progressivement du bruit à des images jusqu'à obtenir du bruit pur, et le modèle apprend à inverser ce processus ; (2) lors de la génération, on part de bruit aléatoire et le modèle le « débruite » étape par étape. Un mécanisme de guidage par texte permet de diriger la génération selon un prompt. C'est la technologie derrière Stable Diffusion, DALL-E et Midjourney.",
-        example: "Écrire « un chat astronaute sur la lune, style aquarelle » et obtenir une image correspondante en quelques secondes.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-
-      // === ÉTHIQUE ===
-      {
-        id: "biais", term: "Biais Algorithmique", en: "Algorithmic Bias",
-        category: "Éthique", icon: "\u2696\uFE0F",
-        summary: "Tendance systématique d'un modèle d'IA à produire des résultats injustes ou discriminatoires envers certains groupes.",
-        detail: "Les biais dans l'IA viennent principalement des données d'entraînement qui reflètent les inégalités et stéréotypes de la société. Types de biais courants : biais de sélection (données non représentatives), biais historique (les données reflètent des discriminations passées), biais de mesure. Les conséquences peuvent être graves : discrimination à l'embauche, inégalités dans l'octroi de crédits, erreurs de reconnaissance faciale. La réglementation européenne (AI Act) impose des obligations de détection et de correction des biais.",
-        example: "Un système de recrutement par IA qui pénalise les CV de femmes parce qu'il a été entraîné sur des données historiques d'un secteur majoritairement masculin.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-          { label: "Conseil de l'Europe — Glossaire IA", url: "https://www.coe.int/fr/web/artificial-intelligence/glossary" },
-        ],
-      },
-      {
-        id: "alignement", term: "Alignement", en: "AI Alignment",
-        category: "Éthique", icon: "\u{1F3AF}",
-        summary: "Ensemble des techniques visant à s'assurer qu'un système d'IA se comporte conformément aux intentions et aux valeurs humaines.",
-        detail: "L'alignement est l'un des défis les plus importants de la recherche en IA. Il s'agit de garantir que les systèmes d'IA font ce que les humains veulent réellement. Les techniques incluent le RLHF, le Constitutional AI (approche d'Anthropic), le red-teaming (tester les limites du modèle), et l'évaluation continue. L'alignement est crucial à mesure que les systèmes d'IA deviennent plus puissants et autonomes.",
-        example: "Anthropic a développé l'approche « Constitutional AI » pour Claude, où le modèle est guidé par un ensemble de principes éthiques.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "explicabilite", term: "Explicabilité", en: "Explainability / XAI",
-        category: "Éthique", icon: "\u{1F50E}",
-        summary: "Capacité d'un système d'IA à expliquer de manière compréhensible pour un humain comment il est parvenu à un résultat.",
-        detail: "L'explicabilité est un enjeu majeur dans les domaines sensibles (santé, justice, finance). Les réseaux de neurones profonds sont souvent qualifiés de « boîtes noires ». Les approches incluent : LIME (explications locales), SHAP (attribution de l'importance des variables), les cartes d'attention, et les chaînes de raisonnement. Le Règlement IA européen (AI Act) impose des obligations de transparence pour les systèmes à haut risque.",
-        example: "Un modèle de diagnostic médical qui surligne la zone suspecte sur une radio et explique pourquoi elle lui semble anormale.",
-        sources: [
-          { label: "CScience — Glossaire IA", url: "https://www.cscience.ca/le-glossaire-de-lintelligence-artificielle-ia-cscience/" },
-          { label: "Conseil de l'Europe — Glossaire IA", url: "https://www.coe.int/fr/web/artificial-intelligence/glossary" },
-        ],
-      },
-      {
-        id: "ai-act", term: "Règlement IA européen (AI Act)", en: "EU AI Act",
-        category: "Éthique", icon: "\u{1F1EA}\u{1F1FA}",
-        summary: "Premier cadre juridique au monde sur l'intelligence artificielle, adopté par l'UE, classant les systèmes d'IA par niveaux de risque.",
-        detail: "L'AI Act, entré en vigueur en août 2024, classe les systèmes d'IA en 4 niveaux de risque : (1) Inacceptable (interdit) : notation sociale, manipulation subliminale ; (2) Haut risque : systèmes utilisés dans l'emploi, l'éducation, la justice, la santé — soumis à des obligations strictes ; (3) Risque limité : chatbots, deepfakes — obligation de transparence ; (4) Risque minimal : filtres anti-spam, jeux vidéo — pas d'obligations spécifiques.",
-        example: "En vertu de l'AI Act, un système d'IA qui trie des CV pour un recrutement est classé « haut risque » et doit respecter des obligations de transparence et de non-discrimination.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "surapprentissage", term: "Surapprentissage", en: "Overfitting",
-        category: "Éthique", icon: "\u{1F4C8}",
-        summary: "Phénomène où un modèle apprend « trop bien » les données d'entraînement, au point de ne plus pouvoir généraliser à de nouvelles données.",
-        detail: "Le surapprentissage se produit quand le modèle mémorise les données au lieu d'en extraire les patterns généraux. C'est comme un élève qui apprendrait par cœur les réponses d'un examen blanc mais serait incapable de répondre à des questions différentes. Solutions : régularisation, dropout (désactiver aléatoirement des neurones), augmentation des données, et validation croisée.",
-        example: "Un modèle de détection de fraude entraîné sur un échantillon trop petit qui signale comme frauduleuses toutes les transactions ne correspondant pas exactement aux exemples vus.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-
-      // === INFRASTRUCTURE ===
-      {
-        id: "gpu", term: "GPU / Processeur Graphique", en: "Graphics Processing Unit",
-        category: "Infrastructure", icon: "\u{1F4BB}",
-        summary: "Processeur massivement parallèle, initialement conçu pour le rendu graphique, devenu essentiel pour l'entraînement et l'inférence des modèles d'IA.",
-        detail: "Les GPU sont au cœur de la révolution IA. Contrairement aux CPU qui excellent dans les tâches séquentielles, les GPU peuvent effectuer des milliers de calculs simples en parallèle — exactement ce que nécessitent les réseaux de neurones (multiplications de matrices). NVIDIA domine le marché avec ses GPU H100, H200 et Blackwell. L'entraînement d'un grand LLM peut nécessiter des milliers de GPU pendant des mois et coûter des dizaines de millions de dollars.",
-        example: "L'entraînement de GPT-4 a nécessité environ 25 000 GPU NVIDIA A100 pendant plusieurs mois.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "inference", term: "Inférence", en: "Inference",
-        category: "Infrastructure", icon: "\u{1F680}",
-        summary: "Phase d'utilisation d'un modèle déjà entraîné pour produire des prédictions ou des réponses à partir de nouvelles données.",
-        detail: "L'inférence est l'opposé de l'entraînement : au lieu d'apprendre, le modèle applique ce qu'il a appris. C'est ce qui se passe quand vous posez une question à Claude. Les optimisations incluent : la quantification (réduire la précision des nombres), la distillation (créer un modèle plus petit qui imite le grand), le batching (traiter plusieurs requêtes ensemble), et le caching KV.",
-        example: "Quand vous envoyez un message à Claude et attendez sa réponse, le serveur fait de l'inférence.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "api", term: "API (Interface de Programmation)", en: "Application Programming Interface",
-        category: "Infrastructure", icon: "\u{1F527}",
-        summary: "Interface technique permettant aux développeurs d'intégrer les capacités d'un modèle d'IA dans leurs propres applications.",
-        detail: "Une API est un ensemble de règles permettant à des logiciels de communiquer entre eux. Dans le contexte de l'IA, les API permettent d'envoyer des requêtes à un modèle hébergé dans le cloud et de recevoir des réponses. Les principaux fournisseurs (Anthropic, OpenAI, Google) proposent des API payantes au token. Les API offrent plus de contrôle que les interfaces chat : choix du modèle, paramètres de température, system prompts, function calling, etc.",
-        example: "Un développeur utilise l'API d'Anthropic pour intégrer Claude dans une application de support client.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "open-source", term: "Modèle Open Source / Open Weight", en: "Open Source / Open Weight Model",
-        category: "Infrastructure", icon: "\u{1F513}",
-        summary: "Modèle d'IA dont les poids (et parfois le code) sont publiquement disponibles, permettant à quiconque de l'utiliser et le modifier.",
-        detail: "Il y a une distinction importante : « open weight » signifie que les poids du modèle sont disponibles, tandis que « open source » implique aussi la disponibilité du code d'entraînement et des données. Avantages : souveraineté des données, personnalisation illimitée, pas de dépendance à un fournisseur. Inconvénients : nécessite des compétences techniques et de l'infrastructure pour le déploiement.",
-        example: "Llama (Meta), Mistral (Mistral AI) et Qwen (Alibaba) sont des modèles open weight populaires.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "base-vectorielle", term: "Base de Données Vectorielle", en: "Vector Database",
-        category: "Infrastructure", icon: "\u{1F5C4}\uFE0F",
-        summary: "Base de données spécialisée dans le stockage et la recherche rapide de vecteurs (embeddings), essentielle pour les systèmes RAG.",
-        detail: "Une base vectorielle stocke des embeddings et permet de trouver rapidement les vecteurs les plus similaires à un vecteur de requête. C'est le composant clé d'un système RAG. Les solutions populaires incluent Pinecone, Chroma, Weaviate, Qdrant et pgvector (extension PostgreSQL).",
-        example: "Une entreprise stocke les embeddings de toute sa documentation technique dans Pinecone pour que son chatbot interne retrouve les informations pertinentes.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
-      {
-        id: "quantification", term: "Quantification", en: "Quantization",
-        category: "Infrastructure", icon: "\u{1F4C9}",
-        summary: "Technique de compression d'un modèle qui réduit la précision numérique des paramètres pour le rendre plus léger et rapide.",
-        detail: "Par défaut, les paramètres sont stockés en nombres à virgule flottante 32 bits (FP32) ou 16 bits (FP16). La quantification réduit cette précision à 8 bits (INT8), 4 bits (INT4) voire moins. Cela réduit la taille du modèle (÷2 à ÷8) et accélère l'inférence, avec une perte de qualité souvent minime. Les formats courants incluent GPTQ, AWQ et GGUF.",
-        example: "Un modèle Llama 70B en FP16 pèse ~140 Go. Quantifié en 4 bits, il ne pèse plus que ~35 Go et peut tourner sur un PC avec une bonne carte graphique.",
-        sources: [
-          { label: "CNIL — Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" },
-        ],
-      },
+      { id: "ia", term: "Intelligence Artificielle (IA)", en: "Artificial Intelligence (AI)", category: "Fondamentaux", icon: "\u{1F9E0}", summary: "Champ interdisciplinaire visant \u00e0 cr\u00e9er des syst\u00e8mes capables d\u2019imiter des processus cognitifs humains comme le raisonnement, l\u2019apprentissage et la prise de d\u00e9cision.", detail: "L\u2019IA est un domaine th\u00e9orique et pratique qui a pour objet la compr\u00e9hension de m\u00e9canismes de la cognition et de la r\u00e9flexion, et leur imitation par un dispositif mat\u00e9riel et logiciel. Elle englobe de nombreuses sous-disciplines : apprentissage automatique, traitement du langage naturel, vision par ordinateur, robotique, etc. On distingue souvent l\u2019IA faible (sp\u00e9cialis\u00e9e dans une t\u00e2che pr\u00e9cise, comme la reconnaissance d\u2019images) de l\u2019IA forte (th\u00e9orique, capable de raisonner de mani\u00e8re autonome comme un humain). Les syst\u00e8mes d\u2019IA actuels sont tous de type \u00ab IA faible \u00bb ou \u00ab IA \u00e9troite \u00bb.", example: "Les assistants vocaux (Siri, Alexa), la recommandation de contenus sur Netflix, les filtres anti-spam de Gmail, ou encore les outils comme ChatGPT et Claude.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }, { label: "L\u00e9gifrance \u2014 Vocabulaire officiel", url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000037783813" }] },
+      { id: "ia-generative", term: "IA G\u00e9n\u00e9rative", en: "Generative AI (GenAI)", category: "Fondamentaux", icon: "\u2728", summary: "Branche de l\u2019IA qui utilise des mod\u00e8les g\u00e9n\u00e9ratifs pour produire du contenu nouveau : texte, images, audio, vid\u00e9o ou code.", detail: "L\u2019IA g\u00e9n\u00e9rative s\u2019appuie sur des mod\u00e8les entra\u00een\u00e9s sur d\u2019immenses volumes de donn\u00e9es pour cr\u00e9er du contenu original. Contrairement \u00e0 l\u2019IA classique qui classe ou pr\u00e9dit, l\u2019IA g\u00e9n\u00e9rative \u00ab cr\u00e9e \u00bb. Elle repose principalement sur des architectures comme les Transformeurs (GPT, Claude, Gemini) pour le texte, les mod\u00e8les de diffusion (Stable Diffusion, DALL-E, Midjourney) pour les images, et des mod\u00e8les sp\u00e9cialis\u00e9s pour l\u2019audio et la vid\u00e9o.", example: "Claude (Anthropic), ChatGPT (OpenAI), Midjourney et Stable Diffusion pour les images, Suno pour la musique, Sora (OpenAI) pour la vid\u00e9o.", sources: [{ label: "Min. \u00c9ducation \u2014 Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" }, { label: "Min. Culture \u2014 50 termes cl\u00e9s", url: "https://www.culture.gouv.fr/thematiques/langue-francaise-et-langues-de-france/agir-pour-les-langues/moderniser-et-enrichir-la-langue-francaise/nos-publications/50-termes-cles-de-l-intelligence-artificielle" }] },
+      { id: "llm", term: "Grand Mod\u00e8le de Langage (LLM)", en: "Large Language Model (LLM)", category: "Fondamentaux", icon: "\u{1F4DA}", summary: "Mod\u00e8le d\u2019IA entra\u00een\u00e9 sur d\u2019\u00e9normes volumes de texte, capable de comprendre et de g\u00e9n\u00e9rer du langage naturel de mani\u00e8re coh\u00e9rente.", detail: "Un LLM est un type de r\u00e9seau de neurones (g\u00e9n\u00e9ralement bas\u00e9 sur l\u2019architecture Transformeur) qui a \u00e9t\u00e9 pr\u00e9-entra\u00een\u00e9 sur des milliards de pages de texte issues d\u2019internet, de livres, d\u2019articles scientifiques, etc. Cette phase d\u2019entra\u00eenement lui permet d\u2019acqu\u00e9rir une compr\u00e9hension statistique profonde du langage. Les LLM sont ensuite affin\u00e9s (fine-tuning) et align\u00e9s avec les pr\u00e9f\u00e9rences humaines (RLHF) pour devenir des assistants utiles. La taille d\u2019un LLM se mesure en \u00ab param\u00e8tres \u00bb.", example: "GPT-4 (OpenAI), Claude (Anthropic), Gemini (Google), Llama (Meta), Mistral (Mistral AI).", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }, { label: "Min. Culture \u2014 50 termes cl\u00e9s", url: "https://www.culture.gouv.fr/thematiques/langue-francaise-et-langues-de-france/agir-pour-les-langues/moderniser-et-enrichir-la-langue-francaise/nos-publications/50-termes-cles-de-l-intelligence-artificielle" }] },
+      { id: "modele-generatif", term: "Mod\u00e8le G\u00e9n\u00e9ratif", en: "Generative Model", category: "Fondamentaux", icon: "\u{1F52E}", summary: "Mod\u00e8le d\u2019IA capable de produire de nouvelles donn\u00e9es (texte, images, sons) qui ressemblent aux donn\u00e9es sur lesquelles il a \u00e9t\u00e9 entra\u00een\u00e9.", detail: "Un mod\u00e8le g\u00e9n\u00e9ratif apprend la distribution statistique des donn\u00e9es d\u2019entra\u00eenement et peut ensuite \u00e9chantillonner cette distribution pour cr\u00e9er du contenu nouveau. Il existe plusieurs familles : les mod\u00e8les auto-r\u00e9gressifs (GPT, Claude) qui g\u00e9n\u00e8rent du texte mot par mot, les mod\u00e8les de diffusion (Stable Diffusion), les GAN et les VAE.", example: "Claude est un mod\u00e8le g\u00e9n\u00e9ratif de texte. DALL-E 3 est un mod\u00e8le g\u00e9n\u00e9ratif d\u2019images.", sources: [{ label: "Min. \u00c9ducation \u2014 Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" }] },
+      { id: "modele-preentrainé", term: "Mod\u00e8le Pr\u00e9entra\u00een\u00e9", en: "Foundation Model / Pretrained Model", category: "Fondamentaux", icon: "\u{1F3D7}\uFE0F", summary: "Mod\u00e8le d\u2019IA entra\u00een\u00e9 de mani\u00e8re g\u00e9n\u00e9raliste sur un large volume de donn\u00e9es, con\u00e7u pour \u00eatre r\u00e9utilis\u00e9 et adapt\u00e9 \u00e0 de nombreuses t\u00e2ches.", detail: "Un mod\u00e8le pr\u00e9entra\u00een\u00e9 est le r\u00e9sultat d\u2019un apprentissage massif et co\u00fbteux. Il sert de base \u00e0 des adaptations ult\u00e9rieures via le fine-tuning ou l\u2019apprentissage par transfert. L\u2019id\u00e9e est d\u2019investir une fois dans un entra\u00eenement g\u00e9n\u00e9raliste, puis de sp\u00e9cialiser le mod\u00e8le pour des usages pr\u00e9cis \u00e0 moindre co\u00fbt.", example: "Llama 3 de Meta est un mod\u00e8le pr\u00e9entra\u00een\u00e9 open source que des entreprises peuvent adapter \u00e0 leurs besoins sp\u00e9cifiques.", sources: [{ label: "Min. \u00c9ducation \u2014 Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" }, { label: "L\u00e9gifrance \u2014 Vocabulaire officiel", url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000037783813" }] },
+      { id: "apprentissage-automatique", term: "Apprentissage Automatique", en: "Machine Learning (ML)", category: "Apprentissage", icon: "\u2699\uFE0F", summary: "Processus par lequel un algorithme am\u00e9liore ses performances en s\u2019entra\u00eenant sur des donn\u00e9es, sans \u00eatre explicitement programm\u00e9 pour chaque cas.", detail: "L\u2019apprentissage automatique est le c\u0153ur de l\u2019IA moderne. Au lieu de coder des r\u00e8gles \u00e0 la main, on fournit des exemples \u00e0 un algorithme qui va \u00ab apprendre \u00bb les patterns sous-jacents. Il existe trois grandes familles : apprentissage supervis\u00e9, non supervis\u00e9 et par renforcement.", example: "Un filtre anti-spam qui apprend \u00e0 distinguer les e-mails l\u00e9gitimes des spams en analysant des milliers d\u2019exemples \u00e9tiquet\u00e9s.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }, { label: "L\u00e9gifrance \u2014 Vocabulaire officiel", url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000037783813" }] },
+      { id: "apprentissage-supervise", term: "Apprentissage Supervis\u00e9", en: "Supervised Learning", category: "Apprentissage", icon: "\u{1F3F7}\uFE0F", summary: "M\u00e9thode d\u2019apprentissage o\u00f9 l\u2019algorithme s\u2019entra\u00eene sur des donn\u00e9es \u00e9tiquet\u00e9es, c\u2019est-\u00e0-dire des exemples dont on conna\u00eet d\u00e9j\u00e0 la r\u00e9ponse attendue.", detail: "Dans l\u2019apprentissage supervis\u00e9, chaque exemple est associ\u00e9 \u00e0 un label. Le mod\u00e8le apprend \u00e0 pr\u00e9dire ces labels pour de nouvelles donn\u00e9es. On distingue la classification (pr\u00e9dire une cat\u00e9gorie) et la r\u00e9gression (pr\u00e9dire une valeur num\u00e9rique).", example: "Entra\u00eener un mod\u00e8le \u00e0 reconna\u00eetre des tumeurs sur des radiographies en lui montrant des milliers d\u2019images annot\u00e9es par des m\u00e9decins.", sources: [{ label: "Min. Enseignement sup\u00e9rieur \u2014 Vocabulaire IA", url: "https://www.enseignementsup-recherche.gouv.fr/fr/bo/19/Hebdo6/CTNR1832601K.htm" }] },
+      { id: "apprentissage-non-supervise", term: "Apprentissage Non Supervis\u00e9", en: "Unsupervised Learning", category: "Apprentissage", icon: "\u{1F50D}", summary: "M\u00e9thode o\u00f9 l\u2019algorithme d\u00e9couvre des structures et des patterns cach\u00e9s dans des donn\u00e9es non \u00e9tiquet\u00e9es, sans r\u00e9ponses pr\u00e9d\u00e9finies.", detail: "L\u2019algorithme doit trouver par lui-m\u00eame des structures int\u00e9ressantes. Les techniques principales incluent le clustering, la r\u00e9duction de dimensionnalit\u00e9 et la d\u00e9tection d\u2019anomalies.", example: "Segmenter automatiquement des clients en groupes selon leurs habitudes d\u2019achat, sans cat\u00e9gories pr\u00e9d\u00e9finies.", sources: [{ label: "Min. Enseignement sup\u00e9rieur \u2014 Vocabulaire IA", url: "https://www.enseignementsup-recherche.gouv.fr/fr/bo/19/Hebdo6/CTNR1832601K.htm" }, { label: "CScience \u2014 Glossaire IA", url: "https://www.cscience.ca/le-glossaire-de-lintelligence-artificielle-ia-cscience/" }] },
+      { id: "apprentissage-renforcement", term: "Apprentissage par Renforcement", en: "Reinforcement Learning (RL)", category: "Apprentissage", icon: "\u{1F3AE}", summary: "M\u00e9thode o\u00f9 un agent apprend en interagissant avec un environnement, recevant des r\u00e9compenses ou des p\u00e9nalit\u00e9s selon ses actions.", detail: "L\u2019apprentissage par renforcement s\u2019inspire de la psychologie comportementale. Un agent prend des actions dans un environnement, re\u00e7oit des signaux de r\u00e9compense/punition, et ajuste sa strat\u00e9gie pour maximiser la r\u00e9compense cumul\u00e9e. C\u2019est aussi central dans l\u2019alignement des LLM via le RLHF.", example: "Un robot qui apprend \u00e0 marcher en essayant diff\u00e9rents mouvements et en recevant un score selon sa stabilit\u00e9.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }, { label: "CScience \u2014 Glossaire IA", url: "https://www.cscience.ca/le-glossaire-de-lintelligence-artificielle-ia-cscience/" }] },
+      { id: "apprentissage-profond", term: "Apprentissage Profond", en: "Deep Learning", category: "Apprentissage", icon: "\u{1F3D4}\uFE0F", summary: "Sous-domaine de l\u2019apprentissage automatique utilisant des r\u00e9seaux de neurones \u00e0 nombreuses couches pour traiter des donn\u00e9es complexes.", detail: "L\u2019apprentissage profond utilise des r\u00e9seaux de neurones artificiels avec un grand nombre de couches (d\u2019o\u00f9 \u00ab profond \u00bb). Chaque couche traite l\u2019information \u00e0 un niveau d\u2019abstraction croissant. Cette architecture est derri\u00e8re la plupart des avanc\u00e9es r\u00e9centes en IA.", example: "La reconnaissance faciale sur un smartphone, la traduction automatique de DeepL, ou la conduite autonome de Tesla.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }, { label: "R\u00e9seau Canop\u00e9 \u2014 Lexique IA", url: "https://www.reseau-canope.fr/actualites/article/parlez-vous-ia-le-lexique-pratique-de-lintelligence-artificielle" }] },
+      { id: "fine-tuning", term: "Affinage / Fine-tuning", en: "Fine-tuning", category: "Apprentissage", icon: "\u{1F3AF}", summary: "Processus d\u2019adaptation d\u2019un mod\u00e8le pr\u00e9entra\u00een\u00e9 \u00e0 une t\u00e2che ou un domaine sp\u00e9cifique en poursuivant son entra\u00eenement sur des donn\u00e9es cibl\u00e9es.", detail: "Le fine-tuning consiste \u00e0 prendre un mod\u00e8le d\u00e9j\u00e0 entra\u00een\u00e9 et \u00e0 l\u2019entra\u00eener un peu plus sur un jeu de donn\u00e9es sp\u00e9cialis\u00e9. Techniques : fine-tuning complet, LoRA (Low-Rank Adaptation), fine-tuning par instructions. Le fine-tuning modifie le comportement du mod\u00e8le, tandis que le RAG modifie ses connaissances.", example: "Fine-tuner un LLM sur des documents juridiques fran\u00e7ais pour qu\u2019il soit plus performant en droit.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "rlhf", term: "RLHF", en: "Reinforcement Learning from Human Feedback", category: "Apprentissage", icon: "\u{1F464}", summary: "Technique d\u2019alignement des mod\u00e8les de langage qui utilise les retours humains pour guider l\u2019apprentissage par renforcement.", detail: "Le RLHF est un processus en plusieurs \u00e9tapes : (1) un mod\u00e8le g\u00e9n\u00e8re plusieurs r\u00e9ponses, (2) des \u00e9valuateurs humains les classent, (3) un mod\u00e8le de r\u00e9compense est entra\u00een\u00e9, (4) le LLM est affin\u00e9 par renforcement. Des variantes comme le DPO simplifient ce processus.", example: "Quand Claude refuse poliment de g\u00e9n\u00e9rer du contenu dangereux tout en restant utile, c\u2019est en grande partie gr\u00e2ce au RLHF.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "transfer-learning", term: "Apprentissage par Transfert", en: "Transfer Learning", category: "Apprentissage", icon: "\u{1F504}", summary: "Technique qui consiste \u00e0 r\u00e9utiliser un mod\u00e8le entra\u00een\u00e9 sur une t\u00e2che pour l\u2019adapter \u00e0 une t\u00e2che diff\u00e9rente mais apparent\u00e9e.", detail: "L\u2019id\u00e9e est qu\u2019un mod\u00e8le ayant appris des repr\u00e9sentations g\u00e9n\u00e9rales du monde peut transf\u00e9rer ces connaissances \u00e0 des t\u00e2ches sp\u00e9cifiques avec beaucoup moins de donn\u00e9es. C\u2019est comme apprendre l\u2019espagnol apr\u00e8s avoir ma\u00eetris\u00e9 le fran\u00e7ais.", example: "Un mod\u00e8le de vision entra\u00een\u00e9 sur ImageNet est r\u00e9utilis\u00e9 pour d\u00e9tecter des d\u00e9fauts sur des pi\u00e8ces industrielles.", sources: [{ label: "Min. \u00c9ducation \u2014 Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" }] },
+      { id: "reseau-neurones", term: "R\u00e9seau de Neurones Artificiels", en: "Artificial Neural Network", category: "Architecture", icon: "\u{1F578}\uFE0F", summary: "Architecture de calcul inspir\u00e9e du cerveau humain, compos\u00e9e de neurones artificiels interconnect\u00e9s organis\u00e9s en couches.", detail: "Un r\u00e9seau de neurones est compos\u00e9 de couches de neurones artificiels. Chaque neurone re\u00e7oit des entr\u00e9es, les combine avec des poids, applique une fonction d\u2019activation, et transmet le r\u00e9sultat. Les architectures varient : CNN pour les images, RNN/LSTM pour les s\u00e9quences, Transformeurs pour le texte.", example: "Un r\u00e9seau de neurones convolutif (CNN) qui analyse des photos pour d\u00e9tecter si elles contiennent un chat ou un chien.", sources: [{ label: "L\u00e9gifrance \u2014 Vocabulaire officiel", url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000037783813" }, { label: "Conseil de l\u2019Europe \u2014 Glossaire IA", url: "https://www.coe.int/fr/web/artificial-intelligence/glossary" }] },
+      { id: "transformeur", term: "Transformeur", en: "Transformer", category: "Architecture", icon: "\u26A1", summary: "Architecture de r\u00e9seau de neurones r\u00e9volutionnaire bas\u00e9e sur le m\u00e9canisme d\u2019attention, \u00e0 la base de tous les LLM modernes.", detail: "Introduit en 2017 dans l\u2019article \u00ab Attention Is All You Need \u00bb par Google. Sa force : le m\u00e9canisme d\u2019auto-attention qui permet de traiter toutes les parties d\u2019un texte en parall\u00e8le. Le \u00ab T \u00bb de GPT signifie \u00ab Transformer \u00bb.", example: "GPT-4, Claude, Gemini, Llama \u2014 tous sont bas\u00e9s sur l\u2019architecture Transformeur.", sources: [{ label: "Min. \u00c9ducation \u2014 Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" }] },
+      { id: "neurone-artificiel", term: "Neurone Artificiel", en: "Artificial Neuron", category: "Architecture", icon: "\u{1F535}", summary: "Unit\u00e9 de calcul \u00e9l\u00e9mentaire d\u2019un r\u00e9seau de neurones, qui re\u00e7oit des entr\u00e9es, les pond\u00e8re et produit une sortie via une fonction d\u2019activation.", detail: "Le neurone artificiel fonctionne ainsi : (1) il re\u00e7oit des valeurs d\u2019entr\u00e9e, (2) chaque entr\u00e9e est multipli\u00e9e par un poids, (3) les entr\u00e9es pond\u00e9r\u00e9es sont additionn\u00e9es, (4) une fonction d\u2019activation transforme cette somme en signal de sortie. Les fonctions courantes sont ReLU, sigmoid et tanh.", example: "Dans un LLM comme Claude, chaque couche contient des milliers de neurones qui traitent collectivement les informations.", sources: [{ label: "L\u00e9gifrance \u2014 Vocabulaire officiel", url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000037783813" }, { label: "CScience \u2014 Glossaire IA", url: "https://www.cscience.ca/le-glossaire-de-lintelligence-artificielle-ia-cscience/" }] },
+      { id: "parametres", term: "Param\u00e8tres", en: "Parameters", category: "Architecture", icon: "\u{1F4CA}", summary: "Les valeurs num\u00e9riques internes (poids) d\u2019un mod\u00e8le d\u2019IA qui sont ajust\u00e9es pendant l\u2019entra\u00eenement. Plus il y en a, plus le mod\u00e8le est potentiellement puissant.", detail: "Les param\u00e8tres sont les \u00ab boutons de r\u00e9glage \u00bb d\u2019un mod\u00e8le. Llama 3 existe en versions 8B, 70B et 405B de param\u00e8tres. Plus de param\u00e8tres = patterns plus complexes, mais co\u00fbts plus \u00e9lev\u00e9s.", example: "GPT-3 avait 175 milliards de param\u00e8tres. Les mod\u00e8les r\u00e9cents les plus grands d\u00e9passent le billion.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "token", term: "Jeton / Token", en: "Token", category: "Tokens & Donn\u00e9es", icon: "\u{1F9E9}", summary: "Unit\u00e9 \u00e9l\u00e9mentaire de texte trait\u00e9e par un LLM. Un token peut \u00eatre un mot, un bout de mot ou un caract\u00e8re de ponctuation.", detail: "Avant de traiter du texte, un LLM le d\u00e9coupe en \u00ab tokens \u00bb. Un token n\u2019est pas forc\u00e9ment un mot complet. En moyenne, 1 token \u2248 0,75 mot en anglais. Les tokens sont importants car : (1) limite par requ\u00eate, (2) facturation au token, (3) vitesse en tokens/seconde.", example: "La phrase \u00ab Bonjour, comment allez-vous ? \u00bb fait environ 8 tokens. Claude peut traiter jusqu\u2019\u00e0 200 000 tokens.", sources: [{ label: "Min. \u00c9ducation \u2014 Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" }] },
+      { id: "fenetre-contexte", term: "Fen\u00eatre de Contexte", en: "Context Window", category: "Tokens & Donn\u00e9es", icon: "\u{1FA9F}", summary: "La quantit\u00e9 maximale de texte (en tokens) qu\u2019un LLM peut traiter en une seule fois, incluant l\u2019entr\u00e9e et la sortie.", detail: "La fen\u00eatre de contexte d\u00e9termine combien d\u2019informations le mod\u00e8le peut \u00ab voir \u00bb simultan\u00e9ment. C\u2019est comme la m\u00e9moire de travail du mod\u00e8le. Les fen\u00eatres se sont agrandies : de 4K tokens pour GPT-3 \u00e0 200K pour Claude et jusqu\u2019\u00e0 2M pour Gemini.", example: "Avec 200K tokens, Claude peut analyser un document d\u2019environ 500 pages en une seule requ\u00eate.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "embedding", term: "Plongement / Embedding", en: "Embedding", category: "Tokens & Donn\u00e9es", icon: "\u{1F4D0}", summary: "Repr\u00e9sentation math\u00e9matique (vecteur de nombres) d\u2019un mot, d\u2019une phrase ou d\u2019un document, qui capture son sens s\u00e9mantique.", detail: "Un embedding transforme du texte en un vecteur de nombres. Les \u00e9l\u00e9ments s\u00e9mantiquement proches ont des vecteurs proches. \u00ab Roi \u00bb et \u00ab Reine \u00bb seront plus proches que \u00ab Roi \u00bb et \u00ab Voiture \u00bb. Les embeddings sont au c\u0153ur des syst\u00e8mes RAG.", example: "Dans un syst\u00e8me RAG, les documents sont convertis en embeddings et stock\u00e9s dans une base vectorielle.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "donnees-entrainement", term: "Donn\u00e9es d\u2019Entra\u00eenement", en: "Training Data", category: "Tokens & Donn\u00e9es", icon: "\u{1F4E6}", summary: "L\u2019ensemble des donn\u00e9es utilis\u00e9es pour entra\u00eener un mod\u00e8le d\u2019IA. Leur qualit\u00e9 et diversit\u00e9 d\u00e9terminent directement les performances.", detail: "Pour un LLM, ce sont des milliards de pages de texte. La qualit\u00e9 est cruciale : des donn\u00e9es biais\u00e9es produisent un mod\u00e8le biais\u00e9 (garbage in, garbage out). Le RGPD impose des contraintes importantes en Europe.", example: "Common Crawl et The Pile sont des jeux de donn\u00e9es couramment utilis\u00e9s pour pr\u00e9-entra\u00eener des LLM.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "prompt", term: "Instruction G\u00e9n\u00e9rative / Prompt", en: "Prompt", category: "Interaction", icon: "\u{1F4AC}", summary: "Consigne donn\u00e9e par un utilisateur \u00e0 un mod\u00e8le g\u00e9n\u00e9ratif, formul\u00e9e en langage naturel, qui d\u00e9crit la t\u00e2che \u00e0 accomplir.", detail: "Le prompt est l\u2019interface entre l\u2019humain et le mod\u00e8le. Un bon prompt inclut : un r\u00f4le pour le mod\u00e8le, le contexte n\u00e9cessaire, la t\u00e2che pr\u00e9cise, le format de sortie souhait\u00e9, et \u00e9ventuellement des exemples (few-shot).", example: "\u00ab Tu es un expert en s\u00e9curit\u00e9 informatique. Explique les bonnes pratiques de mots de passe \u00e0 un public d\u00e9butant. \u00bb", sources: [{ label: "Min. \u00c9ducation \u2014 Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" }, { label: "R\u00e9seau Canop\u00e9 \u2014 Lexique IA", url: "https://www.reseau-canope.fr/actualites/article/parlez-vous-ia-le-lexique-pratique-de-lintelligence-artificielle" }] },
+      { id: "prompt-engineering", term: "Ing\u00e9nierie de Prompt", en: "Prompt Engineering", category: "Interaction", icon: "\u{1F6E0}\uFE0F", summary: "Art et science de formuler des instructions pr\u00e9cises et efficaces pour obtenir les meilleurs r\u00e9sultats d\u2019un mod\u00e8le d\u2019IA.", detail: "Techniques courantes : Zero-shot, Few-shot, Chain-of-Thought, Role-playing, prompt syst\u00e8me. Techniques avanc\u00e9es : Tree-of-Thought, ReAct, prompt structur\u00e9 avec des balises XML.", example: "Au lieu de \u00ab r\u00e9sume ce texte \u00bb : \u00ab R\u00e9sume en 3 paragraphes. Le 1er couvre les points principaux, le 2e les d\u00e9tails techniques, le 3e les implications. \u00bb", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "dialogueur", term: "Dialogueur / Chatbot", en: "Chatbot / Conversational Agent", category: "Interaction", icon: "\u{1F916}", summary: "Logiciel sp\u00e9cialis\u00e9 dans le dialogue en langage naturel avec un humain, capable de r\u00e9pondre \u00e0 des questions ou de d\u00e9clencher des actions.", detail: "Le terme officiel fran\u00e7ais est \u00ab dialogueur \u00bb. Les dialogueurs modernes combinent compr\u00e9hension du langage naturel, gestion du contexte conversationnel, et parfois acc\u00e8s \u00e0 des outils externes.", example: "Claude d\u2019Anthropic, ChatGPT d\u2019OpenAI, Gemini de Google sont des dialogueurs avanc\u00e9s bas\u00e9s sur des LLM.", sources: [{ label: "L\u00e9gifrance \u2014 Vocabulaire officiel", url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000037783813" }] },
+      { id: "agent", term: "Agent IA", en: "AI Agent", category: "Interaction", icon: "\u{1F575}\uFE0F", summary: "Syst\u00e8me d\u2019IA autonome capable de percevoir son environnement, de prendre des d\u00e9cisions et d\u2019agir pour atteindre des objectifs.", detail: "Un agent IA va au-del\u00e0 du simple chatbot : il peut planifier des actions, utiliser des outils, naviguer sur le web, ex\u00e9cuter du code, et it\u00e9rer sur ses r\u00e9sultats. Claude Code est un exemple d\u2019agent.", example: "Un agent qui, \u00e0 partir de \u00ab organise mon voyage \u00e0 Tokyo \u00bb, recherche les vols, compare les h\u00f4tels et cr\u00e9e un itin\u00e9raire.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }, { label: "CScience \u2014 Glossaire IA", url: "https://www.cscience.ca/le-glossaire-de-lintelligence-artificielle-ia-cscience/" }] },
+      { id: "rag", term: "RAG (G\u00e9n\u00e9ration Augment\u00e9e par R\u00e9cup\u00e9ration)", en: "Retrieval-Augmented Generation", category: "Interaction", icon: "\u{1F517}", summary: "Architecture qui enrichit les r\u00e9ponses d\u2019un LLM en r\u00e9cup\u00e9rant d\u2019abord des informations pertinentes dans une base de connaissances externe.", detail: "Le RAG r\u00e9sout un probl\u00e8me majeur des LLM : leurs connaissances sont fig\u00e9es. Le processus : (1) la question est convertie en embedding, (2) recherche s\u00e9mantique dans une base vectorielle, (3) documents inject\u00e9s dans le prompt, (4) le LLM g\u00e9n\u00e8re sa r\u00e9ponse.", example: "Un chatbot d\u2019entreprise qui r\u00e9pond aux questions en cherchant d\u2019abord dans la documentation interne.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "mcp", term: "MCP (Protocole de Contexte de Mod\u00e8le)", en: "Model Context Protocol", category: "Interaction", icon: "\u{1F50C}", summary: "Protocole ouvert d\u00e9velopp\u00e9 par Anthropic permettant aux LLM de se connecter \u00e0 des sources de donn\u00e9es et outils externes de mani\u00e8re standardis\u00e9e.", detail: "Le MCP fonctionne comme un \u00ab USB-C pour l\u2019IA \u00bb : un seul protocole pour connecter n\u2019importe quel outil. Il fonctionne via des serveurs MCP qui exposent des \u00ab tools \u00bb (actions) et des \u00ab resources \u00bb (donn\u00e9es).", example: "Gr\u00e2ce au MCP, Claude peut rechercher dans Notion, lire des e-mails Gmail, ou cr\u00e9er des t\u00e2ches Asana.", sources: [{ label: "Anthropic \u2014 Documentation MCP", url: "https://docs.anthropic.com" }] },
+      { id: "tln", term: "Traitement du Langage Naturel (TLN)", en: "Natural Language Processing (NLP)", category: "Langage", icon: "\u{1F5E3}\uFE0F", summary: "Branche de l\u2019IA qui permet aux machines de comprendre, interpr\u00e9ter et g\u00e9n\u00e9rer le langage humain.", detail: "Le TLN englobe toutes les technologies d\u2019interaction homme-machine en langage naturel : analyse de sentiment, traduction automatique, r\u00e9sum\u00e9 automatique, g\u00e9n\u00e9ration de texte, r\u00e9ponse aux questions.", example: "La correction automatique de votre smartphone, la traduction de DeepL, l\u2019analyse automatique des avis clients.", sources: [{ label: "CScience \u2014 Glossaire IA", url: "https://www.cscience.ca/le-glossaire-de-lintelligence-artificielle-ia-cscience/" }, { label: "Conseil de l\u2019Europe \u2014 Glossaire IA", url: "https://www.coe.int/fr/web/artificial-intelligence/glossary" }] },
+      { id: "hallucination", term: "Hallucination", en: "Hallucination", category: "Langage", icon: "\u{1F47B}", summary: "Ph\u00e9nom\u00e8ne o\u00f9 un mod\u00e8le d\u2019IA g\u00e9n\u00e8re des informations fausses, invent\u00e9es ou incoh\u00e9rentes avec un ton tr\u00e8s convaincant.", detail: "Le mod\u00e8le ne \u00ab sait \u00bb pas qu\u2019il invente : il g\u00e9n\u00e8re le texte le plus probable statistiquement. Strat\u00e9gies : RAG, chain-of-thought et v\u00e9rification crois\u00e9e.", example: "Un LLM qui cite un article scientifique avec un titre et des auteurs parfaitement cr\u00e9dibles\u2026 mais qui n\u2019existe pas.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "temperature", term: "Temp\u00e9rature", en: "Temperature", category: "Langage", icon: "\u{1F321}\uFE0F", summary: "Param\u00e8tre qui contr\u00f4le le degr\u00e9 de cr\u00e9ativit\u00e9 et d\u2019al\u00e9atoire dans les r\u00e9ponses d\u2019un mod\u00e8le de langage.", detail: "\u00c0 temp\u00e9rature 0, le mod\u00e8le choisit toujours le token le plus probable (d\u00e9terministe). \u00c0 temp\u00e9rature \u00e9lev\u00e9e, il explore des options moins probables (cr\u00e9atif, surprenant, mais plus risqu\u00e9).", example: "Pour g\u00e9n\u00e9rer du code fiable : temp\u00e9rature 0. Pour \u00e9crire un po\u00e8me original : 0.8 ou plus.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "tokenisation", term: "Tokenisation / Segmentation", en: "Tokenization", category: "Langage", icon: "\u2702\uFE0F", summary: "Processus de d\u00e9coupage d\u2019un texte en unit\u00e9s \u00e9l\u00e9mentaires (tokens) que le mod\u00e8le peut traiter.", detail: "M\u00e9thodes courantes : BPE (GPT), WordPiece (BERT), SentencePiece. Le fran\u00e7ais n\u00e9cessite g\u00e9n\u00e9ralement plus de tokens que l\u2019anglais.", example: "Le mot \u00ab anticonstitutionnellement \u00bb pourrait \u00eatre d\u00e9coup\u00e9 en : \u00ab anti \u00bb, \u00ab constitu \u00bb, \u00ab tion \u00bb, \u00ab nelle \u00bb, \u00ab ment \u00bb.", sources: [{ label: "Min. \u00c9ducation \u2014 Vocabulaire IA", url: "https://www.education.gouv.fr/bo/2024/Hebdo36/CTNR2423171K" }] },
+      { id: "vision-ordinateur", term: "Vision par Ordinateur", en: "Computer Vision", category: "Multimodal", icon: "\u{1F441}\uFE0F", summary: "Domaine de l\u2019IA qui permet aux machines d\u2019interpr\u00e9ter et de comprendre les images et les vid\u00e9os.", detail: "Utilise des r\u00e9seaux de neurones (CNN, Vision Transformers) pour analyser des images : classification, d\u00e9tection d\u2019objets, segmentation, reconnaissance faciale.", example: "Les voitures autonomes utilisent la vision par ordinateur pour d\u00e9tecter les pi\u00e9tons et lire les panneaux.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "multimodal", term: "Multimodal", en: "Multimodal", category: "Multimodal", icon: "\u{1F3AD}", summary: "Se dit d\u2019un mod\u00e8le d\u2019IA capable de traiter et/ou de g\u00e9n\u00e9rer plusieurs types de donn\u00e9es : texte, images, audio, vid\u00e9o.", detail: "Claude peut analyser une image et en discuter en texte. GPT-4o peut traiter du texte, de l\u2019audio et des images simultan\u00e9ment. La multimodalit\u00e9 est une tendance majeure.", example: "Envoyer une photo d\u2019un message d\u2019erreur \u00e0 Claude et lui demander de diagnostiquer le probl\u00e8me.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "diffusion", term: "Mod\u00e8le de Diffusion", en: "Diffusion Model", category: "Multimodal", icon: "\u{1F3A8}", summary: "Type de mod\u00e8le g\u00e9n\u00e9ratif qui cr\u00e9e des images en partant de bruit al\u00e9atoire et en le \u00ab d\u00e9bruitant \u00bb progressivement.", detail: "Phase 1 : on ajoute du bruit \u00e0 des images, le mod\u00e8le apprend \u00e0 inverser le processus. Phase 2 : on part de bruit al\u00e9atoire et on \u00ab d\u00e9bruite \u00bb. C\u2019est la technologie derri\u00e8re Stable Diffusion, DALL-E et Midjourney.", example: "\u00c9crire \u00ab un chat astronaute sur la lune, style aquarelle \u00bb et obtenir une image correspondante.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "biais", term: "Biais Algorithmique", en: "Algorithmic Bias", category: "\u00c9thique", icon: "\u2696\uFE0F", summary: "Tendance syst\u00e9matique d\u2019un mod\u00e8le d\u2019IA \u00e0 produire des r\u00e9sultats injustes ou discriminatoires envers certains groupes.", detail: "Les biais viennent principalement des donn\u00e9es d\u2019entra\u00eenement qui refl\u00e8tent les in\u00e9galit\u00e9s de la soci\u00e9t\u00e9. L\u2019AI Act impose des obligations de d\u00e9tection et de correction des biais.", example: "Un syst\u00e8me de recrutement par IA qui p\u00e9nalise les CV de femmes parce qu\u2019il a \u00e9t\u00e9 entra\u00een\u00e9 sur des donn\u00e9es historiques d\u2019un secteur masculin.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }, { label: "Conseil de l\u2019Europe \u2014 Glossaire IA", url: "https://www.coe.int/fr/web/artificial-intelligence/glossary" }] },
+      { id: "alignement", term: "Alignement", en: "AI Alignment", category: "\u00c9thique", icon: "\u{1F3AF}", summary: "Ensemble des techniques visant \u00e0 s\u2019assurer qu\u2019un syst\u00e8me d\u2019IA se comporte conform\u00e9ment aux intentions et aux valeurs humaines.", detail: "Techniques : RLHF, Constitutional AI (Anthropic), red-teaming, \u00e9valuation continue. L\u2019alignement est crucial \u00e0 mesure que les syst\u00e8mes deviennent plus puissants.", example: "Anthropic a d\u00e9velopp\u00e9 l\u2019approche \u00ab Constitutional AI \u00bb pour Claude, guid\u00e9 par un ensemble de principes \u00e9thiques.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "explicabilite", term: "Explicabilit\u00e9", en: "Explainability / XAI", category: "\u00c9thique", icon: "\u{1F50E}", summary: "Capacit\u00e9 d\u2019un syst\u00e8me d\u2019IA \u00e0 expliquer de mani\u00e8re compr\u00e9hensible comment il est parvenu \u00e0 un r\u00e9sultat.", detail: "Approches : LIME, SHAP, cartes d\u2019attention, cha\u00eenes de raisonnement. L\u2019AI Act impose des obligations de transparence pour les syst\u00e8mes \u00e0 haut risque.", example: "Un mod\u00e8le de diagnostic m\u00e9dical qui surligne la zone suspecte sur une radio et explique pourquoi.", sources: [{ label: "CScience \u2014 Glossaire IA", url: "https://www.cscience.ca/le-glossaire-de-lintelligence-artificielle-ia-cscience/" }, { label: "Conseil de l\u2019Europe \u2014 Glossaire IA", url: "https://www.coe.int/fr/web/artificial-intelligence/glossary" }] },
+      { id: "ai-act", term: "R\u00e8glement IA europ\u00e9en (AI Act)", en: "EU AI Act", category: "\u00c9thique", icon: "\u{1F1EA}\u{1F1FA}", summary: "Premier cadre juridique au monde sur l\u2019intelligence artificielle, adopt\u00e9 par l\u2019UE, classant les syst\u00e8mes d\u2019IA par niveaux de risque.", detail: "Entr\u00e9 en vigueur en ao\u00fbt 2024. 4 niveaux de risque : (1) Inacceptable (interdit), (2) Haut risque (obligations strictes), (3) Risque limit\u00e9 (transparence), (4) Risque minimal (pas d\u2019obligations).", example: "Un syst\u00e8me d\u2019IA qui trie des CV est class\u00e9 \u00ab haut risque \u00bb et doit respecter des obligations de transparence.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "surapprentissage", term: "Surapprentissage", en: "Overfitting", category: "\u00c9thique", icon: "\u{1F4C8}", summary: "Ph\u00e9nom\u00e8ne o\u00f9 un mod\u00e8le apprend \u00ab trop bien \u00bb les donn\u00e9es d\u2019entra\u00eenement, au point de ne plus pouvoir g\u00e9n\u00e9raliser.", detail: "C\u2019est comme un \u00e9l\u00e8ve qui apprendrait par c\u0153ur un examen blanc mais ne pourrait pas r\u00e9pondre \u00e0 de nouvelles questions. Solutions : r\u00e9gularisation, dropout, augmentation des donn\u00e9es.", example: "Un mod\u00e8le de d\u00e9tection de fraude entra\u00een\u00e9 sur un \u00e9chantillon trop petit qui signale tout comme frauduleux.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "gpu", term: "GPU / Processeur Graphique", en: "Graphics Processing Unit", category: "Infrastructure", icon: "\u{1F4BB}", summary: "Processeur massivement parall\u00e8le, devenu essentiel pour l\u2019entra\u00eenement et l\u2019inf\u00e9rence des mod\u00e8les d\u2019IA.", detail: "Les GPU effectuent des milliers de calculs simples en parall\u00e8le \u2014 exactement ce que n\u00e9cessitent les r\u00e9seaux de neurones. NVIDIA domine le march\u00e9 avec ses GPU H100, H200 et Blackwell.", example: "L\u2019entra\u00eenement de GPT-4 a n\u00e9cessit\u00e9 environ 25 000 GPU NVIDIA A100 pendant plusieurs mois.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "inference", term: "Inf\u00e9rence", en: "Inference", category: "Infrastructure", icon: "\u{1F680}", summary: "Phase d\u2019utilisation d\u2019un mod\u00e8le d\u00e9j\u00e0 entra\u00een\u00e9 pour produire des pr\u00e9dictions ou des r\u00e9ponses.", detail: "L\u2019oppos\u00e9 de l\u2019entra\u00eenement : le mod\u00e8le applique ce qu\u2019il a appris. Optimisations : quantification, distillation, batching, caching KV.", example: "Quand vous envoyez un message \u00e0 Claude et attendez sa r\u00e9ponse, le serveur fait de l\u2019inf\u00e9rence.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "api", term: "API (Interface de Programmation)", en: "Application Programming Interface", category: "Infrastructure", icon: "\u{1F527}", summary: "Interface technique permettant aux d\u00e9veloppeurs d\u2019int\u00e9grer les capacit\u00e9s d\u2019un mod\u00e8le d\u2019IA dans leurs propres applications.", detail: "Les API permettent d\u2019envoyer des requ\u00eates \u00e0 un mod\u00e8le h\u00e9berg\u00e9 dans le cloud et de recevoir des r\u00e9ponses. Les principaux fournisseurs proposent des API payantes au token.", example: "Un d\u00e9veloppeur utilise l\u2019API d\u2019Anthropic pour int\u00e9grer Claude dans une application de support client.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "open-source", term: "Mod\u00e8le Open Source / Open Weight", en: "Open Source / Open Weight Model", category: "Infrastructure", icon: "\u{1F513}", summary: "Mod\u00e8le d\u2019IA dont les poids (et parfois le code) sont publiquement disponibles.", detail: "\u00ab Open weight \u00bb = poids disponibles. \u00ab Open source \u00bb = code d\u2019entra\u00eenement et donn\u00e9es aussi. Avantages : souverainet\u00e9, personnalisation. Inconv\u00e9nients : comp\u00e9tences techniques requises.", example: "Llama (Meta), Mistral (Mistral AI) et Qwen (Alibaba) sont des mod\u00e8les open weight populaires.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "base-vectorielle", term: "Base de Donn\u00e9es Vectorielle", en: "Vector Database", category: "Infrastructure", icon: "\u{1F5C4}\uFE0F", summary: "Base de donn\u00e9es sp\u00e9cialis\u00e9e dans le stockage et la recherche rapide de vecteurs (embeddings), essentielle pour le RAG.", detail: "Stocke des embeddings et trouve rapidement les vecteurs les plus similaires. Solutions populaires : Pinecone, Chroma, Weaviate, Qdrant, pgvector.", example: "Une entreprise stocke les embeddings de sa documentation dans Pinecone pour que son chatbot retrouve les infos pertinentes.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
+      { id: "quantification", term: "Quantification", en: "Quantization", category: "Infrastructure", icon: "\u{1F4C9}", summary: "Technique de compression d\u2019un mod\u00e8le qui r\u00e9duit la pr\u00e9cision num\u00e9rique des param\u00e8tres pour le rendre plus l\u00e9ger et rapide.", detail: "R\u00e9duit la pr\u00e9cision de FP32/FP16 \u00e0 INT8 ou INT4. Taille divis\u00e9e par 2 \u00e0 8 avec perte de qualit\u00e9 souvent minime. Formats : GPTQ, AWQ, GGUF.", example: "Un mod\u00e8le Llama 70B en FP16 p\u00e8se ~140 Go. Quantifi\u00e9 en 4 bits : ~35 Go, utilisable sur un bon PC.", sources: [{ label: "CNIL \u2014 Glossaire IA", url: "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia" }] },
     ];
 
     const categories = [
@@ -537,96 +92,56 @@
       { id: "Fondamentaux", label: "Fondamentaux", icon: "\u{1F9E0}" },
       { id: "Apprentissage", label: "Apprentissage", icon: "\u2699\uFE0F" },
       { id: "Architecture", label: "Architecture", icon: "\u{1F578}\uFE0F" },
-      { id: "Tokens & Données", label: "Tokens & Données", icon: "\u{1F9E9}" },
+      { id: "Tokens & Donn\u00e9es", label: "Tokens & Donn\u00e9es", icon: "\u{1F9E9}" },
       { id: "Interaction", label: "Interaction", icon: "\u{1F4AC}" },
       { id: "Langage", label: "Langage", icon: "\u{1F5E3}\uFE0F" },
       { id: "Multimodal", label: "Multimodal", icon: "\u{1F3AD}" },
-      { id: "Éthique", label: "Éthique & Sécurité", icon: "\u2696\uFE0F" },
+      { id: "\u00c9thique", label: "\u00c9thique & S\u00e9curit\u00e9", icon: "\u2696\uFE0F" },
       { id: "Infrastructure", label: "Infrastructure", icon: "\u{1F4BB}" },
     ];
 
-    /* =========================================
-       COMPONENTS
-    ========================================= */
     function GlossaryCard({ entry, isExpanded, onToggle, index }) {
       const contentRef = useRef(null);
       const [height, setHeight] = useState(0);
-
-      useEffect(() => {
-        if (contentRef.current) {
-          setHeight(isExpanded ? contentRef.current.scrollHeight : 0);
-        }
-      }, [isExpanded]);
+      useEffect(() => { if (contentRef.current) setHeight(isExpanded ? contentRef.current.scrollHeight : 0); }, [isExpanded]);
 
       return (
-        <div className="card-enter"
-          style={{
-            background: isExpanded ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.03)",
-            border: isExpanded ? "1px solid rgba(168,148,255,0.3)" : "1px solid rgba(255,255,255,0.08)",
-            borderRadius: "16px", overflow: "hidden",
-            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)", cursor: "pointer",
-            animationDelay: `${Math.min(index * 30, 300)}ms`,
-          }}
-          onClick={onToggle}
-        >
+        <div className="card-enter" onClick={onToggle}
+          style={{ background: isExpanded ? "#fff" : "rgba(255,255,255,0.7)", border: isExpanded ? "1px solid rgba(108,79,207,0.25)" : "1px solid rgba(108,79,207,0.1)", borderRadius: "16px", overflow: "hidden", transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)", cursor: "pointer", animationDelay: `${Math.min(index*30,300)}ms`, boxShadow: isExpanded ? "0 8px 32px rgba(108,79,207,0.1)" : "0 1px 4px rgba(108,79,207,0.04)", backdropFilter: "blur(10px)" }}>
           <div style={{ padding: "20px 24px", display: "flex", alignItems: "flex-start", gap: "16px" }}>
             <span style={{ fontSize: "28px", lineHeight: "1", flexShrink: 0, marginTop: "2px" }}>{entry.icon}</span>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", marginBottom: "6px" }}>
-                <h3 style={{ margin: 0, fontSize: "17px", fontWeight: 700, color: "#f0ecff", fontFamily: "'DM Sans', sans-serif", lineHeight: 1.3 }}>
-                  {entry.term}
-                </h3>
-                <span style={{ fontSize: "11px", padding: "2px 10px", borderRadius: "100px", background: "rgba(168,148,255,0.15)", color: "#c4b5fd", fontWeight: 600, fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.5px", whiteSpace: "nowrap" }}>
-                  {entry.en}
-                </span>
+                <h3 style={{ margin: 0, fontSize: "17px", fontWeight: 700, color: "#1a1632", fontFamily: "'DM Sans', sans-serif", lineHeight: 1.3 }}>{entry.term}</h3>
+                <span style={{ fontSize: "11px", padding: "2px 10px", borderRadius: "100px", background: "rgba(108,79,207,0.08)", color: "#5a3fb8", fontWeight: 600, fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.5px", whiteSpace: "nowrap" }}>{entry.en}</span>
               </div>
-              <p style={{ margin: 0, fontSize: "14px", color: "rgba(255,255,255,0.6)", lineHeight: 1.6, fontFamily: "'DM Sans', sans-serif" }}>
-                {entry.summary}
-              </p>
+              <p style={{ margin: 0, fontSize: "14px", color: "rgba(26,22,50,0.55)", lineHeight: 1.6, fontFamily: "'DM Sans', sans-serif" }}>{entry.summary}</p>
             </div>
-            <span style={{ fontSize: "18px", color: "rgba(255,255,255,0.3)", transition: "transform 0.3s", transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", flexShrink: 0, marginTop: "4px" }}>
-              &#x25BC;
-            </span>
+            <span style={{ fontSize: "16px", color: "rgba(26,22,50,0.3)", transition: "transform 0.3s", transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", flexShrink: 0, marginTop: "4px" }}>{"\u25BC"}</span>
           </div>
-
-          <div style={{ height: `${height}px`, overflow: "hidden", transition: "height 0.4s cubic-bezier(0.4, 0, 0.2, 1)" }}>
+          <div style={{ height: `${height}px`, overflow: "hidden", transition: "height 0.4s cubic-bezier(0.4,0,0.2,1)" }}>
             <div ref={contentRef} style={{ padding: "0 24px 24px 68px" }}>
-              <div style={{ height: "1px", background: "rgba(255,255,255,0.08)", marginBottom: "20px" }} />
-
+              <div style={{ height: "1px", background: "rgba(108,79,207,0.1)", marginBottom: "20px" }} />
               <div style={{ marginBottom: "18px" }}>
-                <div style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", color: "#a894ff", marginBottom: "8px", fontFamily: "'JetBrains Mono', monospace" }}>
-                  Explication détaillée
-                </div>
-                <p style={{ margin: 0, fontSize: "14px", color: "rgba(255,255,255,0.75)", lineHeight: 1.75, fontFamily: "'DM Sans', sans-serif" }}>
-                  {entry.detail}
-                </p>
+                <div style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", color: "#6c4fcf", marginBottom: "8px", fontFamily: "'JetBrains Mono', monospace" }}>Explication d\u00e9taill\u00e9e</div>
+                <p style={{ margin: 0, fontSize: "14px", color: "rgba(26,22,50,0.7)", lineHeight: 1.75, fontFamily: "'DM Sans', sans-serif" }}>{entry.detail}</p>
               </div>
-
               {entry.example && (
-                <div style={{ background: "rgba(168,148,255,0.08)", borderRadius: "12px", padding: "14px 18px", marginBottom: "18px", borderLeft: "3px solid rgba(168,148,255,0.4)" }}>
-                  <div style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", color: "#a894ff", marginBottom: "6px", fontFamily: "'JetBrains Mono', monospace" }}>
-                    Exemple concret
-                  </div>
-                  <p style={{ margin: 0, fontSize: "13px", color: "rgba(255,255,255,0.7)", lineHeight: 1.65, fontFamily: "'DM Sans', sans-serif", fontStyle: "italic" }}>
-                    {entry.example}
-                  </p>
+                <div style={{ background: "rgba(108,79,207,0.05)", borderRadius: "12px", padding: "14px 18px", marginBottom: "18px", borderLeft: "3px solid rgba(108,79,207,0.25)" }}>
+                  <div style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", color: "#6c4fcf", marginBottom: "6px", fontFamily: "'JetBrains Mono', monospace" }}>Exemple concret</div>
+                  <p style={{ margin: 0, fontSize: "13px", color: "rgba(26,22,50,0.65)", lineHeight: 1.65, fontFamily: "'DM Sans', sans-serif", fontStyle: "italic" }}>{entry.example}</p>
                 </div>
               )}
-
               {entry.sources && entry.sources.length > 0 && (
                 <div>
-                  <div style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", color: "#a894ff", marginBottom: "8px", fontFamily: "'JetBrains Mono', monospace" }}>
-                    Sources
-                  </div>
+                  <div style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", color: "#6c4fcf", marginBottom: "8px", fontFamily: "'JetBrains Mono', monospace" }}>Sources</div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                     {entry.sources.map((src, i) => (
-                      <a key={i} href={src.url} target="_blank" rel="noopener noreferrer"
-                        onClick={e => e.stopPropagation()}
-                        style={{ fontSize: "12px", padding: "5px 12px", borderRadius: "8px", background: "rgba(255,255,255,0.06)", color: "#c4b5fd", textDecoration: "none", fontFamily: "'DM Sans', sans-serif", border: "1px solid rgba(255,255,255,0.08)", transition: "all 0.2s" }}
-                        onMouseEnter={e => { e.target.style.background = "rgba(168,148,255,0.15)"; e.target.style.borderColor = "rgba(168,148,255,0.3)"; }}
-                        onMouseLeave={e => { e.target.style.background = "rgba(255,255,255,0.06)"; e.target.style.borderColor = "rgba(255,255,255,0.08)"; }}
-                      >
-                        {src.label} &#x2197;
+                      <a key={i} href={src.url} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
+                        style={{ fontSize: "12px", padding: "5px 12px", borderRadius: "8px", background: "rgba(108,79,207,0.05)", color: "#5a3fb8", textDecoration: "none", fontFamily: "'DM Sans', sans-serif", border: "1px solid rgba(108,79,207,0.1)", transition: "all 0.2s" }}
+                        onMouseEnter={e => { e.target.style.background = "rgba(108,79,207,0.1)"; e.target.style.borderColor = "rgba(108,79,207,0.25)"; }}
+                        onMouseLeave={e => { e.target.style.background = "rgba(108,79,207,0.05)"; e.target.style.borderColor = "rgba(108,79,207,0.1)"; }}>
+                        {src.label} {"\u2197"}
                       </a>
                     ))}
                   </div>
@@ -643,96 +158,62 @@
       const [activeCategory, setActiveCategory] = useState("all");
       const [expandedId, setExpandedId] = useState(null);
 
-      const filtered = useMemo(() => {
-        return glossaryData.filter(entry => {
-          const matchCategory = activeCategory === "all" || entry.category === activeCategory;
-          const q = search.toLowerCase();
-          const matchSearch = !q ||
-            entry.term.toLowerCase().includes(q) ||
-            entry.en.toLowerCase().includes(q) ||
-            entry.summary.toLowerCase().includes(q) ||
-            entry.detail.toLowerCase().includes(q);
-          return matchCategory && matchSearch;
-        });
-      }, [search, activeCategory]);
+      const filtered = useMemo(() => glossaryData.filter(entry => {
+        const matchCat = activeCategory === "all" || entry.category === activeCategory;
+        const q = search.toLowerCase();
+        const matchSearch = !q || entry.term.toLowerCase().includes(q) || entry.en.toLowerCase().includes(q) || entry.summary.toLowerCase().includes(q) || entry.detail.toLowerCase().includes(q);
+        return matchCat && matchSearch;
+      }), [search, activeCategory]);
 
-      const countByCategory = useMemo(() => {
-        const counts = { all: glossaryData.length };
-        glossaryData.forEach(e => { counts[e.category] = (counts[e.category] || 0) + 1; });
-        return counts;
+      const counts = useMemo(() => {
+        const c = { all: glossaryData.length };
+        glossaryData.forEach(e => { c[e.category] = (c[e.category] || 0) + 1; });
+        return c;
       }, []);
 
       return (
         <div style={{ minHeight: "100vh" }}>
-          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none", zIndex: 0, background: "radial-gradient(ellipse 600px 400px at 20% 10%, rgba(168,148,255,0.06) 0%, transparent 70%), radial-gradient(ellipse 500px 500px at 80% 80%, rgba(100,80,200,0.04) 0%, transparent 70%)" }} />
+          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none", zIndex: 0, background: "radial-gradient(ellipse 800px 500px at 30% 0%, rgba(108,79,207,0.04) 0%, transparent 70%), radial-gradient(ellipse 600px 600px at 80% 90%, rgba(108,79,207,0.03) 0%, transparent 70%)" }} />
           <div style={{ position: "relative", zIndex: 1, maxWidth: "900px", margin: "0 auto", padding: "40px 20px 60px" }}>
-
             <header style={{ textAlign: "center", marginBottom: "44px" }}>
-              <div style={{ fontSize: "12px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "3px", color: "#a894ff", marginBottom: "16px", fontFamily: "'JetBrains Mono', monospace" }}>
-                Encyclopédie Interactive
-              </div>
-              <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 800, margin: "0 0 16px", lineHeight: 1.1, background: "linear-gradient(135deg, #f0ecff 0%, #a894ff 50%, #7c6cd4 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                Glossaire de l'IA
-              </h1>
-              <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.5)", maxWidth: "560px", margin: "0 auto", lineHeight: 1.7 }}>
-                {glossaryData.length} termes essentiels expliqués simplement, avec exemples concrets et sources officielles françaises.
-              </p>
+              <div style={{ fontSize: "12px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "3px", color: "#6c4fcf", marginBottom: "16px", fontFamily: "'JetBrains Mono', monospace" }}>Encyclop\u00e9die Interactive</div>
+              <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 800, margin: "0 0 16px", lineHeight: 1.1, background: "linear-gradient(135deg, #1a1632 0%, #6c4fcf 60%, #9b7fe6 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Glossaire de l'IA</h1>
+              <p style={{ fontSize: "16px", color: "rgba(26,22,50,0.5)", maxWidth: "560px", margin: "0 auto", lineHeight: 1.7 }}>{glossaryData.length} termes essentiels expliqu\u00e9s simplement, avec exemples concrets et sources officielles fran\u00e7aises.</p>
             </header>
-
             <div style={{ marginBottom: "24px" }}>
               <div style={{ position: "relative", maxWidth: "540px", margin: "0 auto" }}>
-                <span style={{ position: "absolute", left: "18px", top: "50%", transform: "translateY(-50%)", fontSize: "18px", opacity: 0.4 }}>&#x1F50D;</span>
-                <input type="text" placeholder="Rechercher un terme\u2026" value={search}
-                  onChange={e => setSearch(e.target.value)}
-                  style={{ width: "100%", padding: "14px 18px 14px 50px", fontSize: "15px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "14px", color: "#f0ecff", outline: "none", fontFamily: "'DM Sans', sans-serif", transition: "border-color 0.2s, background 0.2s", boxSizing: "border-box" }}
-                  onFocus={e => { e.target.style.borderColor = "rgba(168,148,255,0.4)"; e.target.style.background = "rgba(255,255,255,0.07)"; }}
-                  onBlur={e => { e.target.style.borderColor = "rgba(255,255,255,0.1)"; e.target.style.background = "rgba(255,255,255,0.05)"; }}
-                />
+                <span style={{ position: "absolute", left: "18px", top: "50%", transform: "translateY(-50%)", fontSize: "18px", opacity: 0.4 }}>{"\u{1F50D}"}</span>
+                <input type="text" placeholder="Rechercher un terme\u2026" value={search} onChange={e => setSearch(e.target.value)}
+                  style={{ width: "100%", padding: "14px 18px 14px 50px", fontSize: "15px", background: "rgba(255,255,255,0.8)", border: "1px solid rgba(108,79,207,0.12)", borderRadius: "14px", color: "#1a1632", outline: "none", fontFamily: "'DM Sans', sans-serif", transition: "all 0.2s", boxSizing: "border-box" }}
+                  onFocus={e => { e.target.style.borderColor = "rgba(108,79,207,0.3)"; e.target.style.background = "#fff"; e.target.style.boxShadow = "0 4px 16px rgba(108,79,207,0.08)"; }}
+                  onBlur={e => { e.target.style.borderColor = "rgba(108,79,207,0.12)"; e.target.style.background = "rgba(255,255,255,0.8)"; e.target.style.boxShadow = "none"; }} />
               </div>
             </div>
-
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", justifyContent: "center", marginBottom: "36px" }}>
               {categories.map(cat => {
                 const isActive = activeCategory === cat.id;
                 return (
                   <button key={cat.id} onClick={() => { setActiveCategory(cat.id); setExpandedId(null); }}
-                    style={{ padding: "8px 16px", borderRadius: "10px", border: "none", cursor: "pointer", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", background: isActive ? "rgba(168,148,255,0.2)" : "rgba(255,255,255,0.04)", color: isActive ? "#c4b5fd" : "rgba(255,255,255,0.45)", transition: "all 0.2s", outline: isActive ? "1px solid rgba(168,148,255,0.3)" : "1px solid transparent" }}>
-                    {cat.icon} {cat.label}
-                    <span style={{ marginLeft: "6px", fontSize: "11px", opacity: 0.6, fontFamily: "'JetBrains Mono', monospace" }}>
-                      {countByCategory[cat.id] || 0}
-                    </span>
+                    style={{ padding: "8px 16px", borderRadius: "10px", border: "none", cursor: "pointer", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", background: isActive ? "rgba(108,79,207,0.1)" : "rgba(255,255,255,0.6)", color: isActive ? "#5a3fb8" : "rgba(26,22,50,0.45)", transition: "all 0.2s", outline: isActive ? "1px solid rgba(108,79,207,0.25)" : "1px solid transparent", boxShadow: isActive ? "0 2px 8px rgba(108,79,207,0.08)" : "none" }}>
+                    {cat.icon} {cat.label} <span style={{ marginLeft: "6px", fontSize: "11px", opacity: 0.5, fontFamily: "'JetBrains Mono', monospace" }}>{counts[cat.id] || 0}</span>
                   </button>
                 );
               })}
             </div>
-
-            <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.35)", marginBottom: "20px", fontFamily: "'JetBrains Mono', monospace", textAlign: "center" }}>
-              {filtered.length} terme{filtered.length > 1 ? "s" : ""} affiché{filtered.length > 1 ? "s" : ""}
-            </div>
-
+            <div style={{ fontSize: "13px", color: "rgba(26,22,50,0.4)", marginBottom: "20px", fontFamily: "'JetBrains Mono', monospace", textAlign: "center" }}>{filtered.length} terme{filtered.length > 1 ? "s" : ""} affich\u00e9{filtered.length > 1 ? "s" : ""}</div>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {filtered.map((entry, index) => (
-                <GlossaryCard key={entry.id} entry={entry} index={index}
-                  isExpanded={expandedId === entry.id}
-                  onToggle={() => setExpandedId(expandedId === entry.id ? null : entry.id)}
-                />
-              ))}
+              {filtered.map((entry, index) => (<GlossaryCard key={entry.id} entry={entry} index={index} isExpanded={expandedId === entry.id} onToggle={() => setExpandedId(expandedId === entry.id ? null : entry.id)} />))}
               {filtered.length === 0 && (
-                <div style={{ textAlign: "center", padding: "60px 20px", color: "rgba(255,255,255,0.3)" }}>
-                  <div style={{ fontSize: "48px", marginBottom: "16px" }}>&#x1F50D;</div>
-                  <p style={{ fontSize: "16px", margin: 0 }}>Aucun terme ne correspond à votre recherche.</p>
-                  <p style={{ fontSize: "14px", margin: "8px 0 0" }}>Essayez avec d'autres mots-clés.</p>
+                <div style={{ textAlign: "center", padding: "60px 20px", color: "rgba(26,22,50,0.4)" }}>
+                  <div style={{ fontSize: "48px", marginBottom: "16px" }}>{"\u{1F50D}"}</div>
+                  <p style={{ fontSize: "16px", margin: 0 }}>Aucun terme ne correspond \u00e0 votre recherche.</p>
+                  <p style={{ fontSize: "14px", margin: "8px 0 0" }}>Essayez avec d'autres mots-cl\u00e9s.</p>
                 </div>
               )}
             </div>
-
-            <footer style={{ marginTop: "48px", textAlign: "center", paddingTop: "32px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.25)", lineHeight: 1.7 }}>
-                Sources principales : CNIL, Légifrance, Min. de la Culture (DGLFLF), Min. de l'Éducation, OQLF, Conseil de l'Europe, Réseau Canopé, CScience
-              </p>
-              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.15)", marginTop: "8px" }}>
-                Glossaire créé avec Claude &middot; Février 2026
-              </p>
+            <footer style={{ marginTop: "48px", textAlign: "center", paddingTop: "32px", borderTop: "1px solid rgba(108,79,207,0.08)" }}>
+              <p style={{ fontSize: "12px", color: "rgba(26,22,50,0.4)", lineHeight: 1.7 }}>Sources principales : CNIL, L\u00e9gifrance, Min. de la Culture (DGLFLF), Min. de l'\u00c9ducation, OQLF, Conseil de l'Europe, R\u00e9seau Canop\u00e9, CScience</p>
+              <p style={{ fontSize: "11px", color: "rgba(26,22,50,0.25)", marginTop: "8px" }}>Glossaire cr\u00e9\u00e9 avec Claude {"\u00B7"} F\u00e9vrier 2026</p>
             </footer>
           </div>
         </div>
